@@ -10,7 +10,7 @@ Letra: var #1		; Contem a letra que foi digitada
 
 posCarro: var #1			; Contem a posicao atual da Carro
 posAntCarro: var #1		; Contem a posicao anterior da Carro
-
+status: var #0     ;status 0=vivo, 1=morto
 
 menu:
 	call printtelamenuScreen
@@ -31,12 +31,18 @@ main:
 	
 	loadn R1, #telaCenLinha0	; Endereco onde comeca a primeira linha do cenario!!
 	loadn R2, #1024  			; cor branca!
-	call ImprimeTela   		;  Rotina de Impresao de Cenario na Tela Inteira
-	call MoveCarro_Desenha
-	call Delay
-	call MoveCarro_RecalculaPos
-	call MoveCarro_Apaga
-	jnz main
+	
+	Move_main:
+
+		call ImprimeTela   		;  Rotina de Impresao de Cenario na Tela Inteira
+		call MoveCarro_Desenha
+		call Delay
+		call MoveCarro_RecalculaPos
+		call MoveCarro_Apaga
+	
+	loadn r0,#'0'
+	load r0, status
+	jnz Move_main
 
 halt
 ;********************************************************

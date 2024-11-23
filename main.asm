@@ -22,7 +22,7 @@ menu:
 		cmp r0, r1			
 		jeq main	
 		jne menu_loop
-	
+
 	halt
 
 ;------------------------------
@@ -32,7 +32,11 @@ main:
 	loadn R1, #telaCenLinha0	; Endereco onde comeca a primeira linha do cenario!!
 	loadn R2, #1024  			; cor branca!
 	call ImprimeTela   		;  Rotina de Impresao de Cenario na Tela Inteira
-	
+	call MoveCarro_Desenha
+	call Delay
+	call MoveCarro_RecalculaPos
+	call MoveCarro_Apaga
+	jnz main
 
 halt
 ;********************************************************
@@ -85,7 +89,6 @@ MoveCarro:
 MoveCarro_Multi:
 	push r0
 	push r1
-	;
 	
 	call MoveCarro_RecalculaPos_Multi		; Recalcula Posicao da Carro
 
@@ -364,7 +367,7 @@ MoveCarro2_RecalculaPos_D_Multi:	; Move Carro para Direita
 ;------------------
 
 
-MoveCarro_Desenha:	; Desenha caractere da Carro
+MoveCarro_Desenha:	; Desenha caracter do Carro
 	push R0
 	push R1
 	push R2
@@ -503,36 +506,36 @@ ImprimeCenario:	;  Rotina de Impresao de Mensagens:    r0 = Posicao da tela que 
 
 ; Declara uma tela vazia para ser preenchida em tempo de execussao:
 
-telaCenLinha0  : string "          z                     z       "
-telaCenLinha1  : string "          z                     z       "
-telaCenLinha2  : string "          z                     z       "
-telaCenLinha3  : string "          z                     z       "
-telaCenLinha4  : string "          z                     z       "
-telaCenLinha5  : string "          z                     z       "
-telaCenLinha6  : string "          z                     z       "
-telaCenLinha7  : string "          z                     z       "
-telaCenLinha8  : string "          z                     z       "
-telaCenLinha9  : string "          z                     z       "
-telaCenLinha10 : string "          z                     z       "
-telaCenLinha11 : string "          z                     z       "
-telaCenLinha12 : string "          z                     z       "
-telaCenLinha13 : string "          z                     z       "
-telaCenLinha14 : string "          z                     z       "
-telaCenLinha15 : string "          z                     z       "
-telaCenLinha16 : string "          z                     z       "
-telaCenLinha17 : string "          z                     z       "
-telaCenLinha18 : string "          z                     z       "
-telaCenLinha19 : string "          z                     z       "
-telaCenLinha20 : string "          z                     z       "
-telaCenLinha21 : string "          z                     z       "
-telaCenLinha22 : string "          z                     z       "
-telaCenLinha23 : string "          z                     z       "
-telaCenLinha24 : string "          z                     z       "
-telaCenLinha25 : string "          z                     z       "
-telaCenLinha26 : string "          z                     z       "
-telaCenLinha27 : string "          z                     z       "
-telaCenLinha28 : string "          z                     z       "
-telaCenLinha29 : string "          z                     z       "	
+telaCenLinha0  : string "          z                  z          "
+telaCenLinha1  : string "          z                  z          "
+telaCenLinha2  : string "          z                  z          "
+telaCenLinha3  : string "          z                  z          "
+telaCenLinha4  : string "          z                  z          "
+telaCenLinha5  : string "          z                  z          "
+telaCenLinha6  : string "          z                  z          "
+telaCenLinha7  : string "          z                  z          "
+telaCenLinha8  : string "          z                  z          "
+telaCenLinha9  : string "          z                  z          "
+telaCenLinha10 : string "          z                  z          "
+telaCenLinha11 : string "          z                  z          "
+telaCenLinha12 : string "          z                  z          "
+telaCenLinha13 : string "          z                  z          "
+telaCenLinha14 : string "          z                  z          "
+telaCenLinha15 : string "          z                  z          "
+telaCenLinha16 : string "          z                  z          "
+telaCenLinha17 : string "          z                  z          "
+telaCenLinha18 : string "          z                  z          "
+telaCenLinha19 : string "          z                  z          "
+telaCenLinha20 : string "          z                  z          "
+telaCenLinha21 : string "          z                  z          "
+telaCenLinha22 : string "          z                  z          "
+telaCenLinha23 : string "          z                  z          "
+telaCenLinha24 : string "          z                  z          "
+telaCenLinha25 : string "          z                  z          "
+telaCenLinha26 : string "          z                  z          "
+telaCenLinha27 : string "          z                  z          "
+telaCenLinha28 : string "          z                  z          "
+telaCenLinha29 : string "          z                  z          "	
 
 
 
@@ -645,9 +648,9 @@ telamenuLinha6  : string "                                        "
 telamenuLinha7  : string "                                        "
 telamenuLinha8  : string "                                        "
 telamenuLinha9  : string "                                        "
-telamenuLinha10 : string "    saaaaaaaaaaaaaaaaaaaaaaaaaaac       "
-telamenuLinha11 : string "    b   CLIQUE 'S' PARA JOGAR   b       "
-telamenuLinha12 : string "    daaaaaaaaaaaaaaaaaaaaaaaaaaai       "
+telamenuLinha10 : string "      saaaaaaaaaaaaaaaaaaaaaaaaaac      "
+telamenuLinha11 : string "      b  CLIQUE 'S' PARA JOGAR!  b      "
+telamenuLinha12 : string "      daaaaaaaaaaaaaaaaaaaaaaaaaai      "
 telamenuLinha13 : string "                                        "
 telamenuLinha14 : string "                  op                    "
 telamenuLinha15 : string "                                        "

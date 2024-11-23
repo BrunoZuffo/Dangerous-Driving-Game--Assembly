@@ -27,6 +27,7 @@ menu:
 
 ;------------------------------
 ;Codigo principal
+
 main:
 	
 	loadn R1, #telaCenLinha0	; Endereco onde comeca a primeira linha do cenario!!
@@ -44,7 +45,18 @@ main:
 	load r0, status
 	jnz Move_main
 
+	call printtelafimScreen
+
+	menu_fim_loop:	
+		call DigLetra
+		loadn r0, #'S'
+		load r1, Letra
+		cmp r0, r1			
+		jeq main	
+		jne menu_fim_loop
+
 halt
+
 ;********************************************************
 ;                       DELAY
 ;********************************************************		
@@ -709,4 +721,80 @@ ImprimeTela: 	;  Rotina de Impresao de Cenario na Tela Inteira
 	pop r1
 	pop r0
 	rts
-				
+
+;********************************************************
+;                      TELA FIM
+;********************************************************
+
+printtelafimScreen:
+
+push r0
+push r1
+push r2
+push r3
+push r4
+push r5
+push r6
+	
+loadn r0,#40 
+loadn r4,#40
+loadn r5,#0
+loadn r2,#telafimLinha29
+add r2,r2,r0
+loadn r0,#0
+loadn r1,#telafimLinha0
+
+   printtelafim_Loop:
+   	loadi r6,r1
+	outchar r6, r0
+	inc r1
+	inc r0
+	mod r3,r0,r4
+	cmp r3,r5
+	jne printtelafim_skip
+	inc r1
+	printtelafim_skip:
+		cmp r1,r2
+		jne printtelafim_Loop
+
+pop r6
+pop r5
+pop r4
+pop r3
+pop r2
+pop r1	
+pop r0
+rts	
+
+;declara uma tela para ser o fim do jogo
+
+telaFimLinha0  : string "                                        "
+telaFimLinha1  : string "                                        "
+telaFimLinha2  : string "                                        "
+telaFimLinha3  : string "                                        "
+telaFimLinha4  : string "                                        "
+telaFimLinha5  : string "                                        "
+telaFimLinha6  : string "                                        "
+telaFimLinha7  : string "                                        "
+telaFimLinha8  : string "                                        "
+telaFimLinha9  : string "                                        "
+telaFimLinha10 : string "  saaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaac  "
+telaFimLinha11 : string "  b           VOCÊ MORREU!           b  "
+telaFimLinha12 : string "  b CLIQUE 'S' PARA JOGAR NOVAMENTE! b  "
+telaFimLinha13 : string "  daaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaai  "
+telaFimLinha14 : string "                  op                    "
+telaFimLinha15 : string "                                        "
+telaFimLinha16 : string "                                        "
+telaFimLinha17 : string "                                        "
+telaFimLinha18 : string "                                        "
+telaFimLinha19 : string "                                        "
+telaFimLinha20 : string "                                        "
+telaFimLinha21 : string "                                        "
+telaFimLinha22 : string "                                        "
+telaFimLinha23 : string "                                        "
+telaFimLinha24 : string "                                        "
+telaFimLinha25 : string "                                        "
+telaFimLinha26 : string "                                        "
+telaFimLinha27 : string "                                        "
+telaFimLinha28 : string "                                        "
+telaFimLinha29 : string "                                        "

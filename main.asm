@@ -52,8 +52,10 @@ main:
 		loadn r0, #'S'
 		load r1, Letra
 		cmp r0, r1			
-		jeq main	
-		jne menu_fim_loop
+		jeq main
+		loadn r0, #'N'
+		cmp r0,r1
+		jeq finalizando
 
 halt
 
@@ -492,6 +494,16 @@ ImprimeStr:	;  Rotina de Impresao de Mensagens:    r0 = Posicao da tela que o pr
 	rts
 
 ;********************************************************
+;                   FINALIZANDO O JOGO
+;********************************************************
+
+finalizando:
+	call: printtelaXUPAFEDERALScreen
+
+halt
+
+
+;********************************************************
 ;                   IMPRIME CENÁRIO
 ;********************************************************
 	
@@ -798,3 +810,80 @@ telaFimLinha26 : string "                                        "
 telaFimLinha27 : string "                                        "
 telaFimLinha28 : string "                                        "
 telaFimLinha29 : string "                                        "
+
+;********************************************************
+;                   TELA XUPA FEDERAL
+;********************************************************
+
+printtelaXUPAFEDERALScreen:
+
+push r0
+push r1
+push r2
+push r3
+push r4
+push r5
+push r6
+	
+loadn r0,#40 
+loadn r4,#40
+loadn r5,#0
+loadn r2,#telaXUPAFEDERALLinha29
+add r2,r2,r0
+loadn r0,#0
+loadn r1,#telaXUPAFEDERALLinha0
+
+   printtelaXUPAFEDERAL_Loop:
+   	loadi r6,r1
+	outchar r6, r0
+	inc r1
+	inc r0
+	mod r3,r0,r4
+	cmp r3,r5
+	jne printtelaXUPAFEDERAL_skip
+	inc r1
+	printtelaXUPAFEDERAL_skip:
+		cmp r1,r2
+		jne printtelaXUPAFEDERAL_Loop
+
+pop r6
+pop r5
+pop r4
+pop r3
+pop r2
+pop r1	
+pop r0
+rts	
+
+;declara uma tela para ser a tela após o fim do jogo dizendo XUPA FEDERAL!!!
+
+telaXUPAFEDERALLinha0  : string "                                        "
+telaXUPAFEDERALLinha1  : string "  X     X  U     U  PPPPPPPP      A     "
+telaXUPAFEDERALLinha2  : string "   X   X   U     U  P       P    A A    "
+telaXUPAFEDERALLinha3  : string "    X X    U     U  P       P   A   A   "
+telaXUPAFEDERALLinha4  : string "     X     U     U  PPPPPPPP   AAAAAAA  "
+telaXUPAFEDERALLinha5  : string "    X X    U     U  P          A     A  "
+telaXUPAFEDERALLinha6  : string "   X   X   U     U  P          A     A  "
+telaXUPAFEDERALLinha7  : string "  X     X   UUUUU   P          A     A  "
+telaXUPAFEDERALLinha8  : string "                                        "
+telaXUPAFEDERALLinha9  : string " FFFF EEEE DDDD   EEEE RRRR    A   L    "
+telaXUPAFEDERALLinha10 : string " F    E    D   D  E    R   R  A A  L    "
+telaXUPAFEDERALLinha11 : string " F    E    D    D E    R   R A   A L    "
+telaXUPAFEDERALLinha12 : string " FFF  EEEE D    D EEEE RRRR  AAAAA L    "
+telaXUPAFEDERALLinha13 : string " F    E    D    D E    R  R  A   A L    "
+telaXUPAFEDERALLinha14 : string " F    E    D   D  E    R   R A   A L    "
+telaXUPAFEDERALLinha15 : string " F    EEEE DDDD   EEEE R   R A   A LLLL "
+telaXUPAFEDERALLinha16 : string "                                        "
+telaXUPAFEDERALLinha17 : string "                                        "
+telaXUPAFEDERALLinha18 : string "                                        "
+telaXUPAFEDERALLinha19 : string "                                        "
+telaXUPAFEDERALLinha20 : string "                                        "
+telaXUPAFEDERALLinha21 : string "                                        "
+telaXUPAFEDERALLinha22 : string "             TUSCA É NOSSO!             "
+telaXUPAFEDERALLinha23 : string "                                        "
+telaXUPAFEDERALLinha24 : string "                                        "
+telaXUPAFEDERALLinha25 : string "                                        "
+telaXUPAFEDERALLinha26 : string "                                        "
+telaXUPAFEDERALLinha27 : string "                                        "
+telaXUPAFEDERALLinha28 : string "                                        "
+telaXUPAFEDERALLinha29 : string "                                        "

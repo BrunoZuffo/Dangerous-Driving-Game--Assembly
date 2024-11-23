@@ -6,8 +6,16 @@ Msn1: string "DESEJA JOGAR NOVAMENTE? 'S/N'"
 Msn2: string "FIM DE JOGO"
 Msn3: string "DIGITE 'S' PARA INICIAR"
 
-Letra: var #1		; Contem a letra que foi digitada
+; Definição dos sprites do carro (2x2)
+carroSuperior: string "<>"
+carroInferior: string "=_"
 
+; Sprites de NPCs (podem ser os mesmos)
+npcCarroSuperior: string "<>"
+npcCarroInferior: string "=_"
+
+
+Letra: var #1		; Contem a letra que foi digitada
 posCarro: var #1			; Contem a posicao atual da Carro
 posAntCarro: var #1		; Contem a posicao anterior da Carro
 
@@ -32,7 +40,14 @@ main:
 	loadn R1, #telaCenLinha0	; Endereco onde comeca a primeira linha do cenario!!
 	loadn R2, #1024  			; cor branca!
 	call ImprimeTela   		;  Rotina de Impresao de Cenario na Tela Inteira
-	
+	loadn posCarro, #580     ; Inicializa a posição do carro no centro
+    call MoveCarro_Desenha   ; Desenha o carro inicial
+    jmp jogo_loop
+
+jogo_loop:
+    call MoveCarro
+    call Delay
+    jmp jogo_loop
 
 halt
 ;********************************************************
@@ -42,39 +57,35 @@ halt
 
 Delay:
 						;Utiliza Push e Pop para nao afetar os Ristradores do programa principal
-	Push R0
-	Push R1
-	
-	Loadn R1, #50  ; a
-   Delay_volta2:				;Quebrou o contador acima em duas partes (dois loops de decremento)
-	Loadn R0, #3000	; b
-   Delay_volta: 
-	Dec R0					; (4*a + 6)b = 1000000  == 1 seg  em um clock de 1MHz
-	JNZ Delay_volta	
-	Dec R1
-	JNZ Delay_volta2
-	
-	Pop R1
-	Pop R0
-	
-	RTS							;return
+	push r0
+    push r1
+    loadn r1, #50
+Delay_loop:
+    loadn r0, #3000
+Delay_inner_loop:
+    dec r0
+    jnz Delay_inner_loop
+    dec r1
+    jnz Delay_loop
+    pop r1
+    pop r0
+    rts					;return
 
 ;-------------------------------
 
 MoveCarro:
-	push r0
-	push r1
-	
-	call MoveCarro_RecalculaPos		; Recalcula Posicao da Carro
+    push r0
+    push r1
+    call MoveCarro_RecalculaPos ; Atualiza a posição do carro
 
-; So' Apaga e Redesenha se (pos != posAnt)
-;	If (posCarro != posAntCarro)	{	
-	load r0, posCarro
-	load r1, posAntCarro
-	cmp r0, r1
-	jeq MoveCarro_Skip
-		call MoveCarro_Apaga
-		call MoveCarro_Desenha		;}
+    ; Se posição mudou, apaga e redesenha
+    load r0, posCarro
+    load r1, posAntCarro
+    cmp r0, r1
+    jeq MoveCarro_Skip
+    call MoveCarro_Apaga
+    call MoveCarro_Desenha
+
   MoveCarro_Skip:
 	
 	pop r1
@@ -109,24 +120,46 @@ MoveCarro_Multi:
 
 	
 MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas pressionadas
-	push R0
-	push R1
-	push R2
-	push R3
-	push R4
-	push R5
-	push R6
+    push r0
+    push r1
+    push r2
 
-	load R0, posCarro
+    load posCarro, r0
+    load Letra, r1
 
-	
-	loadn R2, #'d'
-	cmp R1, R2
-	jeq MoveCarro_RecalculaPos_D
-		
-	loadn R2, #'s'
-	cmp R1, R2
-	jeq MoveCarro_RecalculaPos_S
+    ; Move para a esquerda
+    loadn r2, #'a'
+    cmp r1, r2
+    jeq MoveCarro_Left
+
+    ; Move para a direita
+    loadn r2, #'d'
+    cmp r1, r2
+    jeq MoveCarro_Right
+
+    jmp MoveCarro_Fim
+
+
+    MoveCarro_Right:
+    mod r2, r0, #40
+    cmp r2, #38              ; Está na borda direita (considerando 2 colunas)?
+    jeq MoveCarro_Fim
+    inc r0                   ; Move uma posição à direita
+
+
+	MoveCarro_Left:
+    mod r2, r0, #40          ; Verifica coluna atual
+    cmp r2, #0               ; Está na borda esquerda?
+    jeq MoveCarro_Fim        ; Não move se já está na borda
+    dec r0                   ; Move uma posição à esquerda
+    jmp MoveCarro_Fim
+
+	MoveCarro_Fim:
+    store posCarro, r0       ; Atualiza posição do carro
+    pop r2
+    pop r1
+    pop r0
+    rts
 	
 
 MoveCarro_RecalculaPos_S:	; Move Carro para Baixo
@@ -270,34 +303,30 @@ MoveCarro_RecalculaPos_S_Multi:	; Move Carro para Baixo
 		;jmp MoveCarro_RecalculaPos_Fim
 
 MoveCarro_Apaga:		; Apaga a Carro preservando o Cenario!
-	push R0
-	push R1
-	push R2
-	push R3
-	push R4
-	push R5
+    push r0
+    push r1
+    push r2
 
-	load R0, posAntCarro	; R0 = posAnt
-	
-	; --> R2 = Tela1Linha0 + posAnt + posAnt/40  ; tem que somar posAnt/40 no ponteiro pois as linas da string terminam com /0 !!
+    load posAntCarro, r0      ; Carrega posição anterior
+    loadn r1, #40             ; Largura da tela
 
-	loadn R1, #tela0Linha0	; Endereco onde comeca a primeira linha do cenario!!
-	add R2, R1, r0	; R2 = Tela1Linha0 + posAnt
-	loadn R4, #40
-	div R3, R0, R4	; R3 = posAnt/40
-	add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40
-	
-	loadi R5, R2	; R5 = Char (Tela(posAnt))
-	
-	outchar R5, R0	; Apaga o Obj na tela com o Char correspondente na memoria do cenario
-	
-	pop R5
-	pop R4
-	pop R3
-	pop R2
-	pop R1
-	pop R0
-	rts
+    ; Apaga a parte superior
+    loadn r2, #' '            ; Espaço em branco
+    outchar r2, r0
+    inc r0
+    outchar r2, r0
+
+    ; Apaga a parte inferior
+    add r0, r0, r1            ; Vai para a linha inferior
+    dec r0
+    outchar r2, r0
+    inc r0
+    outchar r2, r0
+
+    pop r2
+    pop r1
+    pop r0
+    rts
 
 MoveCarro_RecalculaPos_Multi:		; Recalcula posicao da Carro em funcao das Teclas pressionadas
 	push R0
@@ -365,27 +394,35 @@ MoveCarro2_RecalculaPos_D_Multi:	; Move Carro para Direita
 
 
 MoveCarro_Desenha:	; Desenha caractere da Carro
-	push R0
-	push R1
-	push R2
-	push R3
-	push R4
-	
-	loadn r4, #0
-	cmp r3, r4
-	jeq Desenhar_Zero
-	
-	loadn r4, #1
-	cmp r3, r4
-	jeq Desenhar_Um
-	
-	loadn r4, #2
-	cmp r3, r4
-	jeq Desenhar_Dois
-	
-	loadn r4, #3
-	cmp r3, r4
-	jeq Desenhar_Tres
+	push r0
+    push r1
+    push r2
+    push r3
+
+    load posCarro, r0         ; Carrega posição do carro
+    loadn r1, #40             ; Largura da tela
+    loadn r2, #carroSuperior
+    call DesenhaSpriteLinha   ; Desenha a parte superior do carro
+
+    add r0, r0, r1            ; Vai para a linha inferior
+    loadn r2, #carroInferior
+    call DesenhaSpriteLinha   ; Desenha a parte inferior do carro
+
+    store posAntCarro, r0     ; Atualiza posição anterior
+    pop r3
+    pop r2
+    pop r1
+    pop r0
+    rts
+
+	DesenhaSpriteLinha:
+    loadi r3, r2              ; Carrega primeiro caractere
+    outchar r3, r0
+    inc r0                    ; Próxima coluna
+    inc r2                    ; Próximo caractere
+    loadi r3, r2              ; Carrega segundo caractere
+    outchar r3, r0
+    rts
 	
 	Desenhar_Zero:
 		loadn R1, #8	; Carro
@@ -419,10 +456,13 @@ MoveCarro_Desenha:	; Desenha caractere da Carro
 ;********************************************************
 
 DigLetra:	; Espera que uma tecla seja digitada e salva na variavel global "Letra"
-	push r0
-	push r1
-	
-	loadn r1, #'S'
+    push r0
+    push r1
+    inchar r0                 ; Lê teclado
+    store Letra, r0           ; Salva letra digitada
+    pop r1
+    pop r0
+    rts
 
    DigLetra_Loop:
 		inchar r0			; Le o teclado, se nada for digitado

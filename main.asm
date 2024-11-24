@@ -115,30 +115,6 @@ MoveCarro:
 	pop r1
 	pop r0
 	rts
-	
-
-MoveCarro_Multi:
-	push r0
-	push r1
-	
-	call MoveCarro_RecalculaPos_Multi		; Recalcula Posicao da Carro
-
-; So' Apaga e Redesenha se (pos != posAnt)
-;	If (posCarro != posAntCarro)	{	
-	load r0, posCarro
-	load r1, posAntCarro
-	cmp r0, r1
-	jeq MoveCarro_Multi_Skip
-		call MoveCarro_Apaga
-		call MoveCarro_Desenha		;}
-		
-	MoveCarro_Multi_Skip:
-			
-		
-		pop r1
-		pop r0
-		rts
-	
 ;------------------------------
 
 	
@@ -158,29 +134,9 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
 	cmp R1, R2
 	jeq MoveCarro_RecalculaPos_D
 		
-	loadn R2, #'s'
+	loadn R2, #'a'
 	cmp R1, R2
-	jeq MoveCarro_RecalculaPos_S
-	
-
-MoveCarro_RecalculaPos_S:	; Move Carro para Baixo
-    call MoveCarro_Apaga
-    loadn r5, #2
-    loadn R1, #12	; Carro
-	loadn R2, #2048
-	add R1, R1, R2
-	load R0, posCarro
-	outchar R1, R0
-    jmp MoveCarro_RecalculaPos_Fim
-
-
-MoveCarro_RecalculaPos_S_Multi:	; Move Carro para Baixo
-	loadn R1, #1159
-	cmp R0, R1		; Testa condicoes de Contorno 
-	jgr MoveCarro_RecalculaPos_Fim_Multi
-	loadn R1, #40
-	add R0, R0, R1	; pos = pos + 40
-	jmp MoveCarro_RecalculaPos_Fim_Multi
+	jeq MoveCarro_RecalculaPos_A
 
 
   MoveCarro_RecalculaPos_Fim:	; Se nao for nenhuma tecla valida, vai embora
@@ -195,9 +151,9 @@ MoveCarro_RecalculaPos_S_Multi:	; Move Carro para Baixo
 	pop R0
 	rts
 
-  MoveCarro_RecalculaPos_A:	; Move Carro para Esquerda
+MoveCarro_RecalculaPos_A:	; Move Carro para Esquerda
   	
-  	call MoveCarro_Apaga
+	call MoveCarro_Apaga
   	loadn r5, #3
 
   	loadn R1, #11	; Carro
@@ -206,7 +162,6 @@ MoveCarro_RecalculaPos_S_Multi:	; Move Carro para Baixo
 	load R0, posCarro
 	outchar R1, R0
 	
-  	
   	jmp MoveCarro_RecalculaPos_Fim
   	
 	loadn R1, #40
@@ -245,15 +200,16 @@ MoveCarro_RecalculaPos_S_Multi:	; Move Carro para Baixo
     mod R1, R0, R1    ; Testa condicoes de Contorno 
     cmp R1, R2
     jeq MoveCarro_RecalculaPos_Fim
-		;inc R0
-		;jmp MoveCarro_RecalculaPos_Fim
+	inc R0
+	jmp MoveCarro_RecalculaPos_Fim
+
 	Mover_Esq:
     loadn R2, #0
     mod R1, R0, R1    ; Testa condicoes de Contorno 
     cmp R1, R2
     jeq MoveCarro_RecalculaPos_Fim
-		;dec R0
-		;jmp MoveCarro_RecalculaPos_Fim
+	dec R0
+	jmp MoveCarro_RecalculaPos_Fim
     
 	loadn R1, #40
 	loadn r3, #0
@@ -276,23 +232,22 @@ MoveCarro_RecalculaPos_S_Multi:	; Move Carro para Baixo
     loadn R2, #1159
     cmp R0, R2    ; Testa condicoes de Contorno 
     jgr MoveCarro_RecalculaPos_Fim
-		;add R0, R0, R1	; pos = pos + 40
-		;jmp MoveCarro_RecalculaPos_Fim	
+	add R0, R0, R1	; pos = pos + 40
+	jmp MoveCarro_RecalculaPos_Fim	
 	
 	Mover_Sul_Um:
     loadn R2, #0
     mod R1, R0, R1    ; Testa condicoes de Contorno 
     cmp R1, R2
     jeq MoveCarro_RecalculaPos_Fim
-    
-		;dec r0
-		;jmp MoveCarro_RecalculaPos_Fim
+	dec r0
+	jmp MoveCarro_RecalculaPos_Fim
 	
 	Mover_Sul_Dois:
     cmp R0, R1   ; Testa condicoes de Contorno 
     jle MoveCarro_RecalculaPos_Fim
-		;sub r0, r0, r1
-		;jmp MoveCarro_RecalculaPos_Fim
+	sub r0, r0, r1
+	jmp MoveCarro_RecalculaPos_Fim
 	
 	Mover_Sul_Tres:
     loadn R2, #39

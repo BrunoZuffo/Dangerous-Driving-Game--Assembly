@@ -8,9 +8,10 @@ Msn3: string "DIGITE 'S' PARA INICIAR"
 
 Letra: var #1		; Contem a letra que foi digitada
 
-posCarro: var #1			; Contem a posicao atual da Carro
-posAntCarro: var #1		; Contem a posicao anterior da Carro
+posCarro: var #1140			; Contem a posicao atual da Carro
+posAntCarro: var #1139		; Contem a posicao anterior da Carro
 status: var #0     ;status 0=vivo, 1=morto
+
 
 menu:
 	call printtelamenuScreen
@@ -22,12 +23,11 @@ menu:
 		cmp r0, r1			
 		jeq main	
 		jne menu_loop
-
+	
 	halt
 
 ;------------------------------
 ;Codigo principal
-
 main:
 	
 	loadn R1, #telaCenLinha0	; Endereco onde comeca a primeira linha do cenario!!
@@ -47,7 +47,7 @@ main:
 
 	call printtelafimScreen
 
-	menu_fim_loop:	
+	menu_fim:	
 		call DigLetra
 		loadn r0, #'S'
 		load r1, Letra
@@ -55,8 +55,19 @@ main:
 		jeq main
 		loadn r0, #'N'
 		cmp r0,r1
-		jeq finalizando
+		jne fim
 
+		finalizando_menu_fim_funcao:
+			call finalizando_menu
+			call DigLetra
+			loadn r0, #'M'
+			load r1, Letra
+			cmp r0, r1
+			jeq main
+			jne menu
+
+	fim:
+	
 halt
 
 ;********************************************************
@@ -460,7 +471,13 @@ DigLetra:	; Espera que uma tecla seja digitada e salva na variavel global "Letra
 
 
 
+;********************************************************
+;                   FINALIZANDO O JOGO
+;********************************************************
 
+finalizando_menu:
+	call printtelaXUPAFEDERALScreen
+rts
 
 ;********************************************************
 ;                   IMPRIME STRING
@@ -492,16 +509,6 @@ ImprimeStr:	;  Rotina de Impresao de Mensagens:    r0 = Posicao da tela que o pr
 	pop r1
 	pop r0
 	rts
-
-;********************************************************
-;                   FINALIZANDO O JOGO
-;********************************************************
-
-finalizando:
-	call: printtelaXUPAFEDERALScreen
-
-halt
-
 
 ;********************************************************
 ;                   IMPRIME CENÁRIO
@@ -768,7 +775,7 @@ loadn r1,#telafimLinha0
 	printtelafim_skip:
 		cmp r1,r2
 		jne printtelafim_Loop
-
+		
 pop r6
 pop r5
 pop r4
@@ -780,36 +787,36 @@ rts
 
 ;declara uma tela para ser o fim do jogo
 
-telaFimLinha0  : string "                                        "
-telaFimLinha1  : string "                                        "
-telaFimLinha2  : string "                                        "
-telaFimLinha3  : string "                                        "
-telaFimLinha4  : string "                                        "
-telaFimLinha5  : string "                                        "
-telaFimLinha6  : string "                                        "
-telaFimLinha7  : string "                                        "
-telaFimLinha8  : string "                                        "
-telaFimLinha9  : string "                                        "
-telaFimLinha10 : string "  saaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaac  "
-telaFimLinha11 : string "  b           VOCÊ MORREU!           b  "
-telaFimLinha12 : string "  b CLIQUE 'S' PARA JOGAR NOVAMENTE! b  "
-telaFimLinha13 : string "  daaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaai  "
-telaFimLinha14 : string "                  op                    "
-telaFimLinha15 : string "                                        "
-telaFimLinha16 : string "                                        "
-telaFimLinha17 : string "                                        "
-telaFimLinha18 : string "                                        "
-telaFimLinha19 : string "                                        "
-telaFimLinha20 : string "                                        "
-telaFimLinha21 : string "                                        "
-telaFimLinha22 : string "                                        "
-telaFimLinha23 : string "                                        "
-telaFimLinha24 : string "                                        "
-telaFimLinha25 : string "                                        "
-telaFimLinha26 : string "                                        "
-telaFimLinha27 : string "                                        "
-telaFimLinha28 : string "                                        "
-telaFimLinha29 : string "                                        "
+telafimLinha0  : string "                                        "
+telafimLinha1  : string "                                        "
+telafimLinha2  : string "                                        "
+telafimLinha3  : string "                                        "
+telafimLinha4  : string "                                        "
+telafimLinha5  : string "                                        "
+telafimLinha6  : string "                                        "
+telafimLinha7  : string "                                        "
+telafimLinha8  : string "                                        "
+telafimLinha9  : string "                                        "
+telafimLinha10 : string "  saaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaac  "
+telafimLinha11 : string "  b           VOCÊ MORREU!           b  "
+telafimLinha12 : string "  b CLIQUE 'S' PARA JOGAR NOVAMENTE/ b  "
+telafimLinha13 : string "  b  OU 'N' PARA VOLTAR PARA O MENU  b  "
+telafimLinha14 : string "  daaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaai  "
+telafimLinha15 : string "                   op                   "
+telafimLinha16 : string "                                        "
+telafimLinha17 : string "                                        "
+telafimLinha18 : string "                                        "
+telafimLinha19 : string "                                        "
+telafimLinha20 : string "                                        "
+telafimLinha21 : string "                                        "
+telafimLinha22 : string "                                        "
+telafimLinha23 : string "                                        "
+telafimLinha24 : string "                                        "
+telafimLinha25 : string "                                        "
+telafimLinha26 : string "                                        "
+telafimLinha27 : string "                                        "
+telafimLinha28 : string "                                        "
+telafimLinha29 : string "                                        "
 
 ;********************************************************
 ;                   TELA XUPA FEDERAL
@@ -877,10 +884,10 @@ telaXUPAFEDERALLinha16 : string "                                        "
 telaXUPAFEDERALLinha17 : string "                                        "
 telaXUPAFEDERALLinha18 : string "                                        "
 telaXUPAFEDERALLinha19 : string "                                        "
-telaXUPAFEDERALLinha20 : string "                                        "
-telaXUPAFEDERALLinha21 : string "                                        "
-telaXUPAFEDERALLinha22 : string "             TUSCA É NOSSO!             "
-telaXUPAFEDERALLinha23 : string "                                        "
+telaXUPAFEDERALLinha20 : string " saaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaac "
+telaXUPAFEDERALLinha21 : string " b CLIQUE 'M' PARA VOLTAR PARA O MENU b "
+telaXUPAFEDERALLinha22 : string " daaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaai "
+telaXUPAFEDERALLinha23 : string "                   op                   "
 telaXUPAFEDERALLinha24 : string "                                        "
 telaXUPAFEDERALLinha25 : string "                                        "
 telaXUPAFEDERALLinha26 : string "                                        "

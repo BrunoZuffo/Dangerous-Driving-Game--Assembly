@@ -77,22 +77,22 @@ halt
 
 Delay:
 						;Utiliza Push e Pop para nao afetar os Ristradores do programa principal
-	Push R0
-	Push R1
+	Push r0
+	Push r1
 	
-	Loadn R1, #50  ; a
+	Loadn r1, #50  ; a
    Delay_volta2:				;Quebrou o contador acima em duas partes (dois loops de decremento)
-	Loadn R0, #3000	; b
+	Loadn r0, #3000	; b
    Delay_volta: 
-	Dec R0					; (4*a + 6)b = 1000000  == 1 seg  em um clock de 1MHz
+	Dec r0					; (4*a + 6)b = 1000000  == 1 seg  em um clock de 1MHz
 	JNZ Delay_volta	
-	Dec R1
+	Dec r1
 	JNZ Delay_volta2
 	
-	Pop R1
-	Pop R0
+	Pop r1
+	Pop r0
 	
-	RTS							;return
+	rts					;return
 
 ;-------------------------------
 
@@ -119,36 +119,36 @@ MoveCarro:
 
 	
 MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas pressionadas
-	push R0
-	push R1
-	push R2
-	push R3
-	push R4
-	push R5
-	push R6
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+	push r6
 
-	load R0, posCarro
+	load r0, posCarro
 
 	
-	loadn R2, #'d'
-	cmp R1, R2
+	loadn r2, #'d'
+	cmp r1, r2
 	jeq MoveCarro_RecalculaPos_D
 		
-	loadn R2, #'a'
-	cmp R1, R2
+	loadn r2, #'a'
+	cmp r1, r2
 	jeq MoveCarro_RecalculaPos_A
 
 
   MoveCarro_RecalculaPos_Fim:	; Se nao for nenhuma tecla valida, vai embora
-	store posCarro, R0
+	store posCarro, r0
 	
-	pop R6
-	pop R5
-	pop R4
-	pop R3
-	pop R2
-	pop R1
-	pop R0
+	pop r6
+	pop r5
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
 	rts
 
 MoveCarro_RecalculaPos_A:	; Move Carro para Esquerda
@@ -166,9 +166,11 @@ MoveCarro_RecalculaPos_A:	; Move Carro para Esquerda
   MoveCarro_RecalculaPos_D:	; Move Carro para Direita
   
   	call MoveCarro_Apaga
-	loadn r1, #40
+	loadn r1,#6
 	loadn r0, #posCarro
-	loadn r2,#39
+	add r0,r1,r0
+	loadn r1,#40
+	loadn r2,#29
 	mod r1, r0, r1		; Testa condicoes de Contorno 
 	cmp r1, r2
 	jeq MoveCarro_RecalculaPos_Fim
@@ -210,53 +212,26 @@ MoveCarro_Apaga:		; Apaga a Carro preservando o Cenario!
 
 
 MoveCarro_Desenha:	; Desenha caracter do Carro
-	push R0
-	push R1
-	push R2
-	push R3
-	push R4
-	
-	loadn r4, #0
-	cmp r3, r4
-	jeq Desenhar_Zero
-	
-	loadn r4, #1
-	cmp r3, r4
-	jeq Desenhar_Um
-	
-	loadn r4, #2
-	cmp r3, r4
-	jeq Desenhar_Dois
-	
-	loadn r4, #3
-	cmp r3, r4
-	jeq Desenhar_Tres
-	
-	Desenhar_Zero:
-		loadn R1, #8	; Carro
-		jmp MoveCarro_Desenha_Fim
-	Desenhar_Um:
-		loadn R1, #10	; Carro
-		jmp MoveCarro_Desenha_Fim
-	Desenhar_Dois:
-		loadn R1, #12	; Carro
-		jmp MoveCarro_Desenha_Fim
-	Desenhar_Tres:
-		loadn R1, #11	; Carro
-		jmp MoveCarro_Desenha_Fim
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+
+	loadn r3,#'r'
+	load r0,posCarro
+	outchar r3,r0
 	
 	MoveCarro_Desenha_Fim:
-		loadn R2, #2048
-		add R1, R1, R2
-		load R0, posCarro
-		outchar R1, R0
-		store posAntCarro, R0	; Atualiza Posicao Anterior da Carro = Posicao Atual
+		store posAntCarro, r0	; Atualiza Posicao Anterior da Carro = Posicao Atual
 		
-		pop R4
-		pop R3
-		pop R2
-		pop R1
-		pop R0
+		pop r5
+		pop r4
+		pop r3
+		pop r2
+		pop r1
+		pop r0
 		rts
 
 ;********************************************************

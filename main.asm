@@ -206,68 +206,6 @@ MoveCarro_Apaga:		; Apaga a Carro preservando o Cenario!
 	pop r0
 	rts
 
-MoveCarro_RecalculaPos_Multi:		; Recalcula posicao da Carro em funcao das Teclas pressionadas
-	push r0
-	push r1
-	push r2
-
-	load r0, posCarro
-	
-	inchar r1				; Le Teclado para controlar a Carro
-	loadn r2, #'a'
-	cmp r1, r2
-	jeq MoveCarro_RecalculaPos_A_Multi
-	
-	loadn r2, #'d'
-	cmp r1, r2
-	jeq MoveCarro_RecalculaPos_D_Multi
-	
-	
-  MoveCarro_RecalculaPos_Fim_Multi:	; Se nao for nenhuma tecla valida, vai embora
-	store posCarro, R0
-
-	pop R2
-	pop R1
-	pop R0
-	rts
-
-MoveCarro_RecalculaPos_A_Multi:	; Move Carro para Esquerda
-	loadn R1, #40
-	loadn R2, #0
-	mod R1, R0, R1		; Testa condicoes de Contorno 
-	cmp R1, R2
-	jeq MoveCarro_RecalculaPos_Fim_Multi
-	dec R0	; pos = pos -1
-	jmp MoveCarro_RecalculaPos_Fim_Multi
-
-MoveCarro2_RecalculaPos_A_Multi:	; Move Carro para Esquerda
-	loadn R1, #40
-	loadn R2, #0
-	mod R1, R4, R1		; Testa condicoes de Contorno 
-	cmp R1, R2
-	jeq MoveCarro_RecalculaPos_Fim_Multi
-	dec R4	; pos = pos -1
-	jmp MoveCarro_RecalculaPos_Fim_Multi
-
-;------------------
-MoveCarro_RecalculaPos_D_Multi:	; Move Carro para Direita	
-	loadn R1, #40
-	loadn R2, #39
-	mod R1, R0, R1		; Testa condicoes de Contorno 
-	cmp R1, R2
-	jeq MoveCarro_RecalculaPos_Fim_Multi
-	inc R0	; pos = pos + 1
-	jmp MoveCarro_RecalculaPos_Fim_Multi
-	
-MoveCarro2_RecalculaPos_D_Multi:	; Move Carro para Direita	
-	loadn R1, #40
-	loadn R2, #39
-	mod R1, R4, R1		; Testa condicoes de Contorno 
-	cmp R1, R2
-	jeq MoveCarro_RecalculaPos_Fim_Multi
-	inc R4	; pos = pos + 1
-	jmp MoveCarro_RecalculaPos_Fim_Multi
-
 ;------------------
 
 

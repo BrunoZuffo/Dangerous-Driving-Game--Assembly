@@ -8,8 +8,8 @@ Msn3: string "DIGITE 'S' PARA INICIAR"
 
 Letra: var #1		; Contem a letra que foi digitada
 
-posCarro: var #1140			; Contem a posicao atual da Carro
-posAntCarro: var #1139		; Contem a posicao anterior da Carro
+posCarro: var #1017			; Contem a posicao atual da Carro
+posAntCarro: var #1016		; Contem a posicao anterior da Carro
 status: var #0     ;status 0=vivo, 1=morto
 
 
@@ -152,156 +152,74 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
 	rts
 
 MoveCarro_RecalculaPos_A:	; Move Carro para Esquerda
-  	
-	call MoveCarro_Apaga
-  	loadn r5, #3
 
-  	loadn R1, #11	; Carro
-	loadn R2, #2048
-	add R1, R1, R2
-	load R0, posCarro
-	outchar R1, R0
-	
-  	jmp MoveCarro_RecalculaPos_Fim
-  	
-	loadn R1, #40
-	loadn R2, #0
-	mod R1, R0, R1		; Testa condicoes de Contorno 
-	cmp R1, R2
+	call MoveCarro_Apaga
+	loadn r1, #40
+	loadn r0, #posCarro
+	loadn r2,#11
+	mod r1, r0, r1		; Testa condicoes de Contorno 
+	cmp r1, r2
 	jeq MoveCarro_RecalculaPos_Fim
-	dec R0	; pos = pos -1
+	dec r0	; pos = pos -1
 	jmp MoveCarro_RecalculaPos_Fim
 		
   MoveCarro_RecalculaPos_D:	; Move Carro para Direita
   
   	call MoveCarro_Apaga
-  	loadn r5, #1
-  	loadn R1, #10	; Carro
-	loadn R2, #2048
-	add R1, R1, R2
-	load R0, posCarro
-	outchar R1, R0
-  	
+	loadn r1, #40
+	loadn r0, #posCarro
+	loadn r2,#39
+	mod r1, r0, r1		; Testa condicoes de Contorno 
+	cmp r1, r2
+	jeq MoveCarro_RecalculaPos_Fim
+	dec r0	; pos = pos -1
 	jmp MoveCarro_RecalculaPos_Fim
 	
-	
-	loadn r3, #1
-	cmp r2, r3
-	jeq Mover_Dir
-	
-	
-	loadn r3, #3
-	cmp r2, r3
-	jeq Mover_Esq
-	
-	
-	Mover_Dir:
-    loadn R2, #39
-    mod R1, R0, R1    ; Testa condicoes de Contorno 
-    cmp R1, R2
-    jeq MoveCarro_RecalculaPos_Fim
-	inc R0
-	jmp MoveCarro_RecalculaPos_Fim
-
-	Mover_Esq:
-    loadn R2, #0
-    mod R1, R0, R1    ; Testa condicoes de Contorno 
-    cmp R1, R2
-    jeq MoveCarro_RecalculaPos_Fim
-	dec R0
-	jmp MoveCarro_RecalculaPos_Fim
-    
-	loadn R1, #40
-	loadn r3, #0
-	cmp r3, r2
-	jeq Mover_Sul_Zero
-	
-	loadn r3, #1
-	cmp r3, r2
-	jeq Mover_Sul_Um
-	
-	loadn r3, #2
-	cmp r3, r2
-	jeq Mover_Sul_Dois
-	
-	loadn r3, #3
-	cmp r3, r2
-	jeq Mover_Sul_Tres
-	
-	Mover_Sul_Zero:
-    loadn R2, #1159
-    cmp R0, R2    ; Testa condicoes de Contorno 
-    jgr MoveCarro_RecalculaPos_Fim
-	add R0, R0, R1	; pos = pos + 40
-	jmp MoveCarro_RecalculaPos_Fim	
-	
-	Mover_Sul_Um:
-    loadn R2, #0
-    mod R1, R0, R1    ; Testa condicoes de Contorno 
-    cmp R1, R2
-    jeq MoveCarro_RecalculaPos_Fim
-	dec r0
-	jmp MoveCarro_RecalculaPos_Fim
-	
-	Mover_Sul_Dois:
-    cmp R0, R1   ; Testa condicoes de Contorno 
-    jle MoveCarro_RecalculaPos_Fim
-	sub r0, r0, r1
-	jmp MoveCarro_RecalculaPos_Fim
-	
-	Mover_Sul_Tres:
-    loadn R2, #39
-    mod R1, R0, R1    ; Testa condicoes de Contorno 
-    cmp R1, R2
-    jeq MoveCarro_RecalculaPos_Fim
-    
-		;inc r0
-		;jmp MoveCarro_RecalculaPos_Fim
 
 MoveCarro_Apaga:		; Apaga a Carro preservando o Cenario!
-	push R0
-	push R1
-	push R2
-	push R3
-	push R4
-	push R5
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
 
-	load R0, posAntCarro	; R0 = posAnt
+	load r0, posAntCarro	; R0 = posAnt
 	
 	; --> R2 = Tela1Linha0 + posAnt + posAnt/40  ; tem que somar posAnt/40 no ponteiro pois as linas da string terminam com /0 !!
 
-	loadn R1, #tela0Linha0	; Endereco onde comeca a primeira linha do cenario!!
-	add R2, R1, r0	; R2 = Tela1Linha0 + posAnt
-	loadn R4, #40
-	div R3, R0, R4	; R3 = posAnt/40
-	add R2, R2, R3	; R2 = Tela1Linha0 + posAnt + posAnt/40
+	loadn r1, #tela0Linha0	; Endereco onde comeca a primeira linha do cenario!!
+	add r2, r1, r0	; R2 = Tela1Linha0 + posAnt
+	loadn r4, #40
+	div r3, r0, r4	; R3 = posAnt/40
+	add r2, r2, r3	; R2 = Tela1Linha0 + posAnt + posAnt/40
 	
-	loadi R5, R2	; R5 = Char (Tela(posAnt))
+	loadi r5, r2	; R5 = Char (Tela(posAnt))
 	
-	outchar R5, R0	; Apaga o Obj na tela com o Char correspondente na memoria do cenario
+	outchar r5, r0	; Apaga o Obj na tela com o Char correspondente na memoria do cenario
 	
-	pop R5
-	pop R4
-	pop R3
-	pop R2
-	pop R1
-	pop R0
+	pop r5
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
 	rts
 
 MoveCarro_RecalculaPos_Multi:		; Recalcula posicao da Carro em funcao das Teclas pressionadas
-	push R0
-	push R1
-	push R2
+	push r0
+	push r1
+	push r2
 
-	load R0, posCarro
+	load r0, posCarro
 	
-	inchar R1				; Le Teclado para controlar a Carro
-	loadn R2, #'a'
-	cmp R1, R2
+	inchar r1				; Le Teclado para controlar a Carro
+	loadn r2, #'a'
+	cmp r1, r2
 	jeq MoveCarro_RecalculaPos_A_Multi
 	
-	loadn R2, #'d'
-	cmp R1, R2
+	loadn r2, #'d'
+	cmp r1, r2
 	jeq MoveCarro_RecalculaPos_D_Multi
 	
 	

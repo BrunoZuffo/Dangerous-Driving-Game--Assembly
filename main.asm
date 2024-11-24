@@ -36,10 +36,7 @@ main:
 	Move_main:
 
 		call ImprimeTela   		;  Rotina de Impresao de Cenario na Tela Inteira
-		call MoveCarro_Desenha
-		call Delay
-		call MoveCarro_RecalculaPos
-		call MoveCarro_Apaga
+		call MoveCarro
 	
 	loadn r0,#'0'
 	load r0, status
@@ -128,12 +125,13 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
 	push r6
 
 	load r0, posCarro
-
 	
+	loadn r1, #'d'
 	loadn r2, #'d'
 	cmp r1, r2
 	jeq MoveCarro_RecalculaPos_D
-		
+	
+	loadn r1,#'a'
 	loadn r2, #'a'
 	cmp r1, r2
 	jeq MoveCarro_RecalculaPos_A
@@ -187,14 +185,9 @@ MoveCarro_Apaga:		; Apaga a Carro preservando o Cenario!
 	push r5
 
 	load r0, posAntCarro	; R0 = posAnt
-	
-	; --> R2 = Tela1Linha0 + posAnt + posAnt/40  ; tem que somar posAnt/40 no ponteiro pois as linas da string terminam com /0 !!
-
-	loadn r1, #tela0Linha0	; Endereco onde comeca a primeira linha do cenario!!
-	add r2, r1, r0	; R2 = Tela1Linha0 + posAnt
-	loadn r4, #40
-	div r3, r0, r4	; R3 = posAnt/40
-	add r2, r2, r3	; R2 = Tela1Linha0 + posAnt + posAnt/40
+	loadn r6,#16
+	loadn r1, #telaCenLinha26	; Endereco onde comeca a primeira linha do cenario!!
+	add r2, r1, r6	; R2 = Tela1Linha0 + posAnt
 	
 	loadi r5, r2	; R5 = Char (Tela(posAnt))
 	

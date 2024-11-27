@@ -1,3 +1,16 @@
+; $ = farol do carro player (fazer amarelo)
+; b = farol do carro npc 
+; % = graminha (fazer verde)
+; & = tronco da árvore (fazer marrom)
+; ' = canto superior esquerda árvore
+; ( = canto superior direita árvore
+; g = canto inferior esquerda árvore
+; h = canto inferior direita árvore
+; + = árvore parte superior reta
+; , = árvore parte inferior reta 
+; ) = faixa da estrada ( vamos fazer amarelo forte ) 
+;asterisco = xadrez que divide mato da estrada
+
 jmp menu
 
 

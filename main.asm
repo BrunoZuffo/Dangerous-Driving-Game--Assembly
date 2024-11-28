@@ -80,11 +80,12 @@ main:
 	call printtelaXUPAFEDERALScreen
 	call DigLetra
 		load r1, Letra
-		loadn r0, #'N'
+		loadn r0, #'M'
 		cmp r0,r1
-		jeq fim_jogo
-		jne fim
+		jeq menu
+		jne fim_jogo
 	fim_jogo:
+
 halt
 
 ;********************************************************

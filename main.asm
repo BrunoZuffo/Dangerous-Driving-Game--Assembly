@@ -77,7 +77,14 @@ main:
 			jne menu
 
 	fim:
-	
+	call printtelaXUPAFEDERALScreen
+	call DigLetra
+		load r1, Letra
+		loadn r0, #'N'
+		cmp r0,r1
+		jeq fim_jogo
+		jne fim
+	fim_jogo:
 halt
 
 ;********************************************************
@@ -138,7 +145,6 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
 	push r6
 
 	load r0, posCarro
-	
 	inchar r2
 	loadn r1, #'d'
 	cmp r1,r2
@@ -194,16 +200,18 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
 	push r2
 	push r3
 
-  	call MoveCarro_Apaga
-	loadn r1,#6
+	call MoveCarro_Apaga
+	loadn r1, #40         ; para usar no mod futuramente
 	loadn r0, #posCarro
-	add r0,r1,r0
-	loadn r1,#40
-	loadn r2,#22
-	mod r1, r0, r1		; Testa condicoes de Contorno 
+	loadn r2,#22       ; contorno limite na direita
+	mod r1, r0, r1		; Testa condicoes de Contorno pegando o resto no mod 40
 	cmp r1, r2
-	jeq MoveCarro_RecalculaPos_Fim
-	inc r0	; pos = pos + 1
+	jeq MoveCarro_RecalculaPos_Fim  ; se a condição de contorno for dada como verdadeira, o carro não se move mais e finaliza o movecarro
+	loadn r0,#12
+	store posAntCarro,r0
+	loadn r3,#10
+	add r1,r2,r3
+	store posCarro,r1
 	jmp MoveCarro_RecalculaPos_Fim
 
 	pop r3
@@ -269,16 +277,39 @@ MoveCarro_Desenha:	; Desenha caracter do Carro
 DigLetra:	; Espera que uma tecla seja digitada e salva na variavel global "Letra"
 	push r0
 	push r1
-	
+	push r2
+	push r3
+
 	loadn r1, #'S'
+	loadn r2,#'N'
+	loadn r3,#'M'
 
    DigLetra_Loop:
 		inchar r0			; Le o teclado
-		cmp r0, r1			; compara r0 com o código da tabela ASCII de S
+		cmp r0, r1
+		jeq Letra_S			; compara r0 com o código da tabela ASCII de S
+		cmp r0,r2
+		jeq Letra_N
+		cmp r0,r3
+		jeq Letra_M
 		jne DigLetra_Loop	; Fica lendo ate' que digite uma tecla valida
 
-	store Letra, r0			; Salva a tecla na variavel global "Letra"
+	Letra_S:
+	store Letra, r0
+	jmp DigLetra_fim
 
+	Letra_N:
+	store Letra, r0			; Salva a tecla na variavel global "Letra"
+	jmp DigLetra_fim
+
+	Letra_M:
+	store Letra,r0
+	jmp DigLetra_fim
+
+	DigLetra_fim:
+
+	pop r3
+	pop r2
 	pop r1
 	pop r0
 	rts

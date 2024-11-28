@@ -43,8 +43,8 @@ menu:
 ;Codigo principal
 main:
 	
-	loadn R1, #telaCenLinha0	; Endereco onde comeca a primeira linha do cenario!!
-	loadn R2, #1024  			; cor branca!
+	loadn r1, #telaCenLinha0	; Endereco onde comeca a primeira linha do cenario!!
+	loadn r2, #1024  			; cor branca!
 	
 	Move_main:
 
@@ -566,10 +566,10 @@ ImprimeTela: 	;  Rotina de Impresao de Cenario na Tela Inteira
 	push r4	; protege o r4 na pilha para ser usado na subrotina
 	push r5	; protege o r4 na pilha para ser usado na subrotina
 
-	loadn R0, #0  	; posicao inicial tem que ser o comeco da tela!
-	loadn R3, #40  	; Incremento da posicao da tela!
-	loadn R4, #41  	; incremento do ponteiro das linhas da tela
-	loadn R5, #1200 ; Limite da tela!
+	loadn r0, #0  	; posicao inicial tem que ser o comeco da tela!
+	loadn r3, #40  	; Incremento da posicao da tela!
+	loadn r4, #41  	; incremento do ponteiro das linhas da tela
+	loadn r5, #1200 ; Limite da tela!
 	
    ImprimeTela_Loop:
 		call ImprimeStr
@@ -641,18 +641,18 @@ telafimLinha5  : string "                                        "
 telafimLinha6  : string "                                        "
 telafimLinha7  : string "                                        "
 telafimLinha8  : string "                                        "
-telafimLinha9  : string "                                        "
-telafimLinha10 : string "  c..................................!  "
-telafimLinha11 : string "  :           VOCE MORREU            ;  "
-telafimLinha12 : string "  : CLIQUE  S  PARA JOGAR NOVAMENTE  ;  "
-telafimLinha13 : string "  :  OU  N  PARA VOLTAR PARA O MENU  ;  "
-telafimLinha14 : string "  @//////////////////////////////////a  "
-telafimLinha15 : string "                                        "
-telafimLinha16 : string "                klmn                    "
-telafimLinha17 : string "                opqr                    "
-telafimLinha18 : string "                stuv                    "
-telafimLinha19 : string "                                        "
-telafimLinha20 : string "                                        "
+telafimLinha9  : string "   c.................................!  "
+telafimLinha10 : string "   :          VOCE MORREU            ;  "
+telafimLinha11 : string "   :                                 ;  "
+telafimLinha12 : string "   : CLIQUE  S  PARA JOGAR NOVAMENTE ;  "
+telafimLinha13 : string "   :                                 ;  "
+telafimLinha14 : string "   : OU  N  PARA VOLTAR PARA O MENU  ;  "
+telafimLinha15 : string "   @/////////////////////////////////a  "
+telafimLinha16 : string "                                        "
+telafimLinha17 : string "                                        "
+telafimLinha18 : string "                  klmn                  "
+telafimLinha19 : string "                  opqr                  "
+telafimLinha20 : string "                  stuv                  "
 telafimLinha21 : string "                                        "
 telafimLinha22 : string "                                        "
 telafimLinha23 : string "                                        "

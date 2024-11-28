@@ -21,8 +21,8 @@ Msn3: string "DIGITE 'S' PARA INICIAR"
 
 Letra: var #1		; Contem a letra que foi digitada
 
-posCarro: var #1017			; Contem a posicao atual da Carro
-posAntCarro: var #1016		; Contem a posicao anterior da Carro
+posCarro: var #1172			; Contem a posicao atual da Carro
+posAntCarro: var #1181		; Contem a posicao anterior da Carro
 status: var #0     ;status 0=vivo, 1=morto
 
 
@@ -33,7 +33,7 @@ menu:
 		call DigLetra
 		loadn r0, #'S'
 		load r1, Letra
-		cmp r0, r1			
+		cmp r0, r1		
 		jeq main	
 		jne menu_loop
 	
@@ -139,19 +139,18 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
 
 	load r0, posCarro
 	
+	inchar r2
 	loadn r1, #'d'
-	loadn r2, #'d'
-	cmp r1, r2
+	cmp r1,r2
 	jeq MoveCarro_RecalculaPos_D
 	
+	inchar r2
 	loadn r1,#'a'
-	loadn r2, #'a'
 	cmp r1, r2
 	jeq MoveCarro_RecalculaPos_A
 
 
   MoveCarro_RecalculaPos_Fim:	; Se nao for nenhuma tecla valida, vai embora
-	store posCarro, r0
 	
 	pop r6
 	pop r5
@@ -162,32 +161,55 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
 	pop r0
 	rts
 
-MoveCarro_RecalculaPos_A:	; Move Carro para Esquerda
+    MoveCarro_RecalculaPos_A:	; Move Carro para Esquerda
+
+	push r0
+	push r1
+	push r2
+	push r3
 
 	call MoveCarro_Apaga
-	loadn r1, #40
+	loadn r1, #40         ; para usar no mod futuramente
 	loadn r0, #posCarro
-	loadn r2,#11
-	mod r1, r0, r1		; Testa condicoes de Contorno 
+	loadn r2,#12       ; contorno limite na esquerda
+	mod r1, r0, r1		; Testa condicoes de Contorno pegando o resto no mod 40
 	cmp r1, r2
-	jeq MoveCarro_RecalculaPos_Fim
-	dec r0	; pos = pos -1
+	jeq MoveCarro_RecalculaPos_Fim  ; se a condição de contorno for dada como verdadeira, o carro não se move mais e finaliza o movecarro
+	loadn r0,#22
+	store posAntCarro,r0
+	loadn r3,#10
+	sub r1,r2,r3
+	store posCarro,r1
 	jmp MoveCarro_RecalculaPos_Fim
-		
+
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+
   MoveCarro_RecalculaPos_D:	; Move Carro para Direita
   
+	push r0
+	push r1
+	push r2
+	push r3
+
   	call MoveCarro_Apaga
 	loadn r1,#6
 	loadn r0, #posCarro
 	add r0,r1,r0
 	loadn r1,#40
-	loadn r2,#29
+	loadn r2,#22
 	mod r1, r0, r1		; Testa condicoes de Contorno 
 	cmp r1, r2
 	jeq MoveCarro_RecalculaPos_Fim
-	dec r0	; pos = pos -1
+	inc r0	; pos = pos + 1
 	jmp MoveCarro_RecalculaPos_Fim
-	
+
+	pop r3
+	pop r2
+	pop r1
+	pop r0
 
 MoveCarro_Apaga:		; Apaga a Carro preservando o Cenario!
 	push r0
@@ -225,7 +247,7 @@ MoveCarro_Desenha:	; Desenha caracter do Carro
 	push r4
 	push r5
 
-	loadn r3,#'r'
+	loadn r3,#'R'
 	load r0,posCarro
 	outchar r3,r0
 	
@@ -251,7 +273,7 @@ DigLetra:	; Espera que uma tecla seja digitada e salva na variavel global "Letra
 	loadn r1, #'S'
 
    DigLetra_Loop:
-		inchar r0			; Le o teclado, se nada for digitado
+		inchar r0			; Le o teclado
 		cmp r0, r1			; compara r0 com o código da tabela ASCII de S
 		jne DigLetra_Loop	; Fica lendo ate' que digite uma tecla valida
 
@@ -335,36 +357,36 @@ ImprimeCenario:	;  Rotina de Impresao de Mensagens:    r0 = Posicao da tela que 
 
 ; Declara uma tela vazia para ser preenchida em tempo de execussao:
 
-telaCenLinha0  : string " %        *         )        *    '+(   "
-telaCenLinha1  : string "          *                  *    g,h   "
-telaCenLinha2  : string "      %   *         )        *     &    "
-telaCenLinha3  : string "          *                  *     &    "
-telaCenLinha4  : string " %        *         )        *     &    " 
-telaCenLinha5  : string "   '+(    *                  *  %       "
-telaCenLinha6  : string "   g,h    *         )        *        % "
-telaCenLinha7  : string "    &     *                  *          "
-telaCenLinha8  : string "    &     *         )        *  %       "
-telaCenLinha9  : string "    &     *                  *          "
-telaCenLinha10 : string " %        *         )        *    '+(   "
-telaCenLinha11 : string "          *                  *    g,h   "
-telaCenLinha12 : string "       %  *         )        *     &    "
-telaCenLinha13 : string "          *                  *     &    "
-telaCenLinha14 : string " %        *         )        *     &    "
-telaCenLinha15 : string "   '+(    *                  * %        "
-telaCenLinha16 : string "   g,h    *         )        *          "
-telaCenLinha17 : string "    &     *                  *       %  "
-telaCenLinha18 : string "    &     *         )        *          "
-telaCenLinha19 : string "    &     *                  * %        "
-telaCenLinha20 : string "          *         )        *    '+(   "
-telaCenLinha21 : string " %        *                  *    g,h   "
-telaCenLinha22 : string "          *         )        *     &    "
-telaCenLinha23 : string "       %  *                  *     &    "
-telaCenLinha24 : string " %        *         )        *     &    "
-telaCenLinha25 : string "   '+(    *                  *          "
-telaCenLinha26 : string "   g,h    *         )        * %        "
-telaCenLinha27 : string "    &     *                  *          "
-telaCenLinha28 : string "    &     *         )        *       %  "
-telaCenLinha29 : string "    &     *                  *          "
+telaCenLinha0  : string " %        *         )         *   '+(   "
+telaCenLinha1  : string "          *                   *   g,h   "
+telaCenLinha2  : string "      %   *         )         *    &    "
+telaCenLinha3  : string "          *                   *    &    "
+telaCenLinha4  : string " %        *         )         *    &    " 
+telaCenLinha5  : string "   '+(    *                   *  %      "
+telaCenLinha6  : string "   g,h    *         )         *       % "
+telaCenLinha7  : string "    &     *                   *         "
+telaCenLinha8  : string "    &     *         )         *  %      "
+telaCenLinha9  : string "    &     *                   *         "
+telaCenLinha10 : string " %        *         )         *   '+(   "
+telaCenLinha11 : string "          *                   *   g,h   "
+telaCenLinha12 : string "       %  *         )         *    &    "
+telaCenLinha13 : string "          *                   *    &    "
+telaCenLinha14 : string " %        *         )         *    &    "
+telaCenLinha15 : string "   '+(    *                   * %       "
+telaCenLinha16 : string "   g,h    *         )         *         "
+telaCenLinha17 : string "    &     *                   *      %  "
+telaCenLinha18 : string "    &     *         )         *         "
+telaCenLinha19 : string "    &     *                   * %       "
+telaCenLinha20 : string "          *         )         *   '+(   "
+telaCenLinha21 : string " %        *                   *   g,h   "
+telaCenLinha22 : string "          *         )         *    &    "
+telaCenLinha23 : string "       %  *                   *    &    "
+telaCenLinha24 : string " %        *         )         *    &    "
+telaCenLinha25 : string "   '+(    *                   *         "
+telaCenLinha26 : string "   g,h    *         )         * %       "
+telaCenLinha27 : string "    &     *                   *         "
+telaCenLinha28 : string "    &     *         )         *      %  "
+telaCenLinha29 : string "    &     *                   *         "
 
 
 

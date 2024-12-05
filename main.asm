@@ -16,8 +16,8 @@ jmp menu
 
 Letra: var #1		; Contem a letra que foi digitada
 
-posCarro: var #10			; Contem a posicao atual da Carro
-posAntCarro: var #10	; Contem a posicao anterior da Carro
+posCarro: var #1172		; Contem a posicao atual da Carro
+posAntCarro: var #1181	; Contem a posicao anterior da Carro
 
 status: var #0     ;status 0=vivo, 1=morto
 
@@ -47,12 +47,12 @@ main:
 		call ImprimeTela		;  Rotina de Impresao de Cenario na Tela Inteira
 		call MoveCarro
 		
-	
 	loadn r0,#'0'
-	load r0, status
+	load r1, status
+	cmp r0,r1
 	jeq Move_main
 
-	
+
 
 	call printtelafimScreen
 
@@ -120,14 +120,11 @@ MoveCarro:
 	
 	call MoveCarro_RecalculaPos		; Recalcula Posicao da Carro
 
-; So' Apaga e Redesenha se (pos != posAnt)
-;	If (posCarro != posAntCarro)	{	
 	load r0, posCarro
 	load r1, posAntCarro
 	cmp r0, r1
 
 	jeq MoveCarro_Skip
-		call MoveCarro_Apaga
 		call MoveCarro_Desenha	
 		call Delay	;}
     MoveCarro_Skip:
@@ -142,10 +139,6 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
 	push r0
 	push r1
 	push r2
-	push r3
-	push r4
-	push r5
-	push r6
 
 	load r0, posCarro
 	inchar r2
@@ -161,10 +154,7 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
 
   MoveCarro_RecalculaPos_Fim:	; Se nao for nenhuma tecla valida, vai embora
 	
-	pop r6
-	pop r5
-	pop r4
-	pop r3
+BREAKP
 	pop r2
 	pop r1
 	pop r0
@@ -172,35 +162,23 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
 
     MoveCarro_RecalculaPos_A:	; Move Carro para Esquerda
 
-	push r0
-	push r1
-	push r2
-	push r3
 
-	call MoveCarro_Apaga
+	;call MoveCarro_Apaga
 	loadn r1, #40         ; para usar no mod futuramente
 	loadn r0, #posCarro
 	loadn r2,#12       ; contorno limite na esquerda
 	mod r1, r0, r1		; Testa condicoes de Contorno pegando o resto no mod 40
 	cmp r1, r2
 	jeq MoveCarro_RecalculaPos_Fim  ; se a condição de contorno for dada como verdadeira, o carro não se move mais e finaliza o movecarro
-	loadn r0,#22
-	store posAntCarro,r0
+	loadn r0,#1181
+	;store posAntCarro,r0
 	loadn r3,#10
 	sub r1,r0,r3
 	store posCarro,r1
+	jmp MoveCarro_RecalculaPos_Fim
 
-	pop r3
-	pop r2
-	pop r1
-	pop r0
-	rts
   MoveCarro_RecalculaPos_D:	; Move Carro para Direita
   
-	push r0
-	push r1
-	push r2
-	push r3
 
 	call MoveCarro_Apaga
 	loadn r1, #40         ; para usar no mod futuramente
@@ -209,18 +187,13 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
 	mod r1, r0, r1		; Testa condicoes de Contorno pegando o resto no mod 40
 	cmp r1, r2
 	jeq MoveCarro_RecalculaPos_Fim  ; se a condição de contorno for dada como verdadeira, o carro não se move mais e finaliza o movecarro
-	loadn r0,#12
+	loadn r0,#1172
 	store posAntCarro,r0
 	loadn r3,#10
 	add r1,r0,r3
 	store posCarro,r1
 	jmp MoveCarro_RecalculaPos_Fim
 
-	pop r3
-	pop r2
-	pop r1
-	pop r0
-	rts
 
 MoveCarro_Apaga:		; Apaga a Carro preservando o Cenario!
 	push r0
@@ -239,31 +212,24 @@ MoveCarro_Apaga:		; Apaga a Carro preservando o Cenario!
 	pop r0
 	rts
 
-;------------------
-
 
 MoveCarro_Desenha:	; Desenha caracter do Carro
 	push r0
 	push r1
 	push r2
 	push r3
-	push r4
-	push r5
 
 	loadn r3,#'R'
 	load r0,posCarro
 	outchar r3,r0
 	
 	MoveCarro_Desenha_Fim:
-		store posAntCarro, r0	; Atualiza Posicao Anterior da Carro = Posicao Atual
-		
-		pop r5
-		pop r4
-		pop r3
-		pop r2
-		pop r1
-		pop r0
-		rts
+
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
 
 ;********************************************************
 ;                   DIGITE UMA LETRA

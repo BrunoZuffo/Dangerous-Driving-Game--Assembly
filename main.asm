@@ -14,15 +14,11 @@
 jmp menu
 
 
-
-Msn1: string "DESEJA JOGAR NOVAMENTE? 'S/N'"
-Msn2: string "FIM DE JOGO"
-Msn3: string "DIGITE 'S' PARA INICIAR"
-
 Letra: var #1		; Contem a letra que foi digitada
 
-posCarro: var #1172			; Contem a posicao atual da Carro
-posAntCarro: var #1181		; Contem a posicao anterior da Carro
+posCarro: var #10			; Contem a posicao atual da Carro
+posAntCarro: var #10	; Contem a posicao anterior da Carro
+
 status: var #0     ;status 0=vivo, 1=morto
 
 
@@ -48,12 +44,15 @@ main:
 	
 	Move_main:
 
-		call ImprimeTela   		;  Rotina de Impresao de Cenario na Tela Inteira
+		call ImprimeTela		;  Rotina de Impresao de Cenario na Tela Inteira
 		call MoveCarro
+		
 	
 	loadn r0,#'0'
 	load r0, status
-	jnz Move_main
+	jeq Move_main
+
+	
 
 	call printtelafimScreen
 
@@ -68,7 +67,7 @@ main:
 		jne fim
 
 		finalizando_menu_fim_funcao:
-			call finalizando_menu
+			call printtelaXUPAFEDERALScreen
 			call DigLetra
 			loadn r0, #'M'
 			load r1, Letra
@@ -87,6 +86,7 @@ main:
 	fim_jogo:
 
 halt
+
 
 ;********************************************************
 ;                       DELAY
@@ -125,10 +125,12 @@ MoveCarro:
 	load r0, posCarro
 	load r1, posAntCarro
 	cmp r0, r1
+
 	jeq MoveCarro_Skip
 		call MoveCarro_Apaga
-		call MoveCarro_Desenha		;}
-  MoveCarro_Skip:
+		call MoveCarro_Desenha	
+		call Delay	;}
+    MoveCarro_Skip:
 	
 	pop r1
 	pop r0
@@ -147,12 +149,12 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
 
 	load r0, posCarro
 	inchar r2
-	loadn r1, #'d'
+	loadn r1, #'D'
 	cmp r1,r2
 	jeq MoveCarro_RecalculaPos_D
 	
 	inchar r2
-	loadn r1,#'a'
+	loadn r1,#'A'
 	cmp r1, r2
 	jeq MoveCarro_RecalculaPos_A
 
@@ -185,15 +187,14 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
 	loadn r0,#22
 	store posAntCarro,r0
 	loadn r3,#10
-	sub r1,r2,r3
+	sub r1,r0,r3
 	store posCarro,r1
-	jmp MoveCarro_RecalculaPos_Fim
 
 	pop r3
 	pop r2
 	pop r1
 	pop r0
-
+	rts
   MoveCarro_RecalculaPos_D:	; Move Carro para Direita
   
 	push r0
@@ -211,7 +212,7 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
 	loadn r0,#12
 	store posAntCarro,r0
 	loadn r3,#10
-	add r1,r2,r3
+	add r1,r0,r3
 	store posCarro,r1
 	jmp MoveCarro_RecalculaPos_Fim
 
@@ -219,26 +220,19 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
 	pop r2
 	pop r1
 	pop r0
+	rts
 
 MoveCarro_Apaga:		; Apaga a Carro preservando o Cenario!
 	push r0
 	push r1
 	push r2
 	push r3
-	push r4
-	push r5
 
 	load r0, posAntCarro	; R0 = posAnt
-	loadn r6,#16
-	loadn r1, #telaCenLinha26	; Endereco onde comeca a primeira linha do cenario!!
-	add r2, r1, r6	; R2 = Tela1Linha0 + posAnt
-	
-	loadi r5, r2	; R5 = Char (Tela(posAnt))
-	
-	outchar r5, r0	; Apaga o Obj na tela com o Char correspondente na memoria do cenario
-	
-	pop r5
-	pop r4
+	loadn r1,#' '
+
+	outchar r1, r0	; Apaga o Obj na tela com o Char correspondente na memoria do cenario
+
 	pop r3
 	pop r2
 	pop r1
@@ -315,15 +309,6 @@ DigLetra:	; Espera que uma tecla seja digitada e salva na variavel global "Letra
 	pop r0
 	rts
 
-
-
-;********************************************************
-;                   FINALIZANDO O JOGO
-;********************************************************
-
-finalizando_menu:
-	call printtelaXUPAFEDERALScreen
-rts
 
 ;********************************************************
 ;                   IMPRIME STRING

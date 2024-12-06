@@ -3,8 +3,10 @@ posCarro: var #1			; Contem a posicao atual da Carro
 posAntCarro: var #1		; 
 
 Letra: var #1		; Contem a letra que foi digitada
+status: var #1    ;0=morto, 1=vivo
 
-
+loadn r0,#1
+store status,r0
 Loadn R0, #1012	
 store posCarro, R0		; Zera Posicao Atual da Carro
 loadn r0,#1021
@@ -41,8 +43,31 @@ Loop:
 	
 		call Delay
 		inc R0 	;c++
-		jmp Loop
+		loadn r3,#1
+		load r4,status
+		cmp r3,r4
+		jeq Loop
 
+	call printtelafimScreen
+
+	loop_fim:
+		call DigLetra
+		loadn r0, #'s'
+		load r1, Letra
+		cmp r0, r1		
+		jeq main
+		loadn r2,#'n'
+		cmp r2,r1
+		jeq finalizando
+	jmp loop_fim
+
+	finalizando:
+	call printtelaXUPAFEDERALScreen
+	call DigLetra
+	loadn r0, #'m'
+	load r1, Letra
+	cmp r0, r1		
+	jeq menu
 
 
 	MoveCarro:
@@ -290,7 +315,7 @@ MoveCarro_Desenha:	; Desenha caractere da Carro
 	outchar r1,r0
 
 	load r0,posCarro
-	loadn r2,#80
+	loadn r2,#81
 	loadn r1,#'"'
 	add r0,r0,r2
 	outchar r1,r0
@@ -302,7 +327,7 @@ MoveCarro_Desenha:	; Desenha caractere da Carro
 	outchar r1,r0
 
 	load r0,posCarro
-	loadn r2,#86
+	loadn r2,#85
 	loadn r1,#'"'
 	add r0,r2,r0
 	outchar r1,r0

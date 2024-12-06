@@ -67,7 +67,7 @@ Loop:
 
 ;--------------------------------
 	
-MoveCarro_Apaga:		; Apaga a Carro preservando o Cenario!
+MoveCarro_Apaga:
 	push R0
 	push R1
 	push R2
@@ -75,14 +75,104 @@ MoveCarro_Apaga:		; Apaga a Carro preservando o Cenario!
 	push R4
 	push R5
 
-	load R0, posAntCarro	; R0 = posAnt
-	loadn r3,#5
-	add r3,r0,r3
+	load R0, posAntCarro	
 	
 	loadn r2,#' '
+	outchar r2,r0
+	loadn r3,#1
+	add r0,r0,r3
+	outchar R2, R0	
+	loadn r3,#1
+	add r0,r0,r3
+	outchar R2, R0
+	loadn r3,#1
+	add r0,r0,r3
+	outchar R2, R0	
+	loadn r3,#1
+	add r0,r0,r3
+	outchar R2, R0	
+	loadn r3,#1
+	add r0,r0,r3
+	outchar R2, R0	
+	loadn r3,#1
+	add r0,r0,r3
+	outchar R2, R0
+
+	load r0, posAntCarro
+
+	loadn r3, #40
+	add r0,r0,r3
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+
+	load r0, posAntCarro
+
+	loadn r3, #80
+	add r0,r0,r3
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+
+	load r0, posAntCarro
+
+	loadn r3, #120
+	add r0,r0,r3
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
 	
-	outchar R2, R0	; Apaga o Obj na tela com o Char correspondente na memoria do cenario
-	outchar r2, r3
+	load r0, posAntCarro
+
+	loadn r3, #160
+	add r0,r0,r3
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
+	outchar R2, R0
+	inc r0
 
 	pop R5
 	pop R4
@@ -149,6 +239,7 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
 MoveCarro_Desenha:	; Desenha caractere da Carro
 	push R0
 	push R1
+	push r2
 	push r3
 
 	loadn r3,#5
@@ -159,7 +250,71 @@ MoveCarro_Desenha:	; Desenha caractere da Carro
 	add r0,r0,r3
 	outchar r1,r0
 
+	loadn r3,#1
+	Loadn R1, #'!'	; Carro
+	load R0, posCarro
+	add r0,r0,r3
+	outchar R1, R0
+	loadn r3,#5
+	add r0,r0,r3
+	outchar r1,r0
+
+	load r0,posCarro
+	inc r0
+	inc r0
+	loadn r1,#'$'
+	outchar r1,r0
+	inc r0
+	loadn r1,#'#'
+	outchar r1,r0
+	inc r0
+	loadn r1,#'$'
+	outchar r1,r0
+
+	load r0,posCarro
+	loadn r2,#40
+	loadn r1,#'@'
+	add r0,r0,r2
+	outchar r1,r0
+	loadn r3,#5
+	add r0,r0,r3
+	outchar r1,r0
+
+	load r0,posCarro
+	loadn r2,#41
+	loadn r1,#'a'
+	add r0,r0,r2
+	outchar r1,r0
+	loadn r3,#5
+	add r0,r0,r3
+	outchar r1,r0
+
+	load r0,posCarro
+	loadn r2,#80
+	loadn r1,#'"'
+	add r0,r0,r2
+	outchar r1,r0
+	loadn r3,#40
+	add r0,r0,r3
+	outchar r1,r0
+	loadn r3,#40
+	add r0,r0,r3
+	outchar r1,r0
+
+	load r0,posCarro
+	loadn r2,#86
+	loadn r1,#'"'
+	add r0,r2,r0
+	outchar r1,r0
+	loadn r3,#40
+	add r0,r0,r3
+	outchar r1,r0
+	loadn r3,#40
+	add r0,r0,r3
+	outchar r1,r0
 	
+
+	pop r3
 	pop r2
 	pop R1
 	pop R0

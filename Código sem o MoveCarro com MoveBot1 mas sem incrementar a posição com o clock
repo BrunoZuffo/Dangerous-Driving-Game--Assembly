@@ -253,6 +253,7 @@ MoveBot1_Desenha:	; Desenha caractere da Bot1
 	push R1
 	push r2
 	push r3
+	push r4
 
 	loadn r0,#12
 	load r1,posBot1
@@ -284,80 +285,172 @@ MoveBot1_Desenha:	; Desenha caractere da Bot1
 	cmp r1,r0
 	jeq MoveBot1_Desenha_9linha
 
-
-	loadn r3,#5
-	Loadn R1, #'c'	; Bot1
-	load R0, posBot1
-	outchar R1, R0
-	store posAntBot1, R0	; Atualiza Posicao Anterior da Bot1 = Posicao Atual
-	add r0,r0,r3
-	outchar r1,r0
-
-	loadn r3,#1
-	Loadn R1, #'!'	; Bot1
-	load R0, posBot1
-	add r0,r0,r3
-	outchar R1, R0
-	loadn r3,#5
-	add r0,r0,r3
-	outchar r1,r0
-
-	load r0,posBot1
-	inc r0
-	inc r0
-	loadn r1,#'$'
-	outchar r1,r0
-	inc r0
-	loadn r1,#'#'
-	outchar r1,r0
-	inc r0
-	loadn r1,#'$'
-	outchar r1,r0
-
-	load r0,posBot1
-	loadn r2,#40
+	loadn r0,posBot1
 	loadn r1,#'@'
-	add r0,r0,r2
 	outchar r1,r0
-	loadn r3,#5
-	add r0,r0,r3
-	outchar r1,r0
+	loadn r2,#5
+	add r2,r0,r2
+	outchar r1,r2
 
-	load r0,posBot1
-	loadn r2,#41
 	loadn r1,#'a'
-	add r0,r0,r2
+	inc r0
 	outchar r1,r0
-	loadn r3,#5
-	add r0,r0,r3
+	inc r2
+	outchar r1,r2
+
+	inc r0
+	loadn r1,#'b'
+	outchar r1,r0
+	inc r0
+	inc r0
 	outchar r1,r0
 
-	load r0,posBot1
-	loadn r2,#81
-	loadn r1,#'"'
-	add r0,r0,r2
-	outchar r1,r0
 	loadn r3,#40
-	add r0,r0,r3
-	outchar r1,r0
-	loadn r3,#40
-	add r0,r0,r3
-	outchar r1,r0
+	loadn r1,#'c'
+	loadn r0,posBot1
+	sub r2,r0,r3
+	outchar r1,r2
+	loadn r1,#'!'
+	inc r2
+	outchar r1,r2
+	loadn r1,#' '
+	inc r2
+	outchar r1,r2
+	inc r2
+	outchar r1,r2
+	inc r2
+	outchar r1,r2
+	inc r2
+	loadn r1,#'c'
+	outchar r1,r2
+	loadn r1,#'!'
+	inc r2
+	outchar r1,r2
 
 	load r0,posBot1
-	loadn r2,#85
-	loadn r1,#'"'
-	add r0,r2,r0
-	outchar r1,r0
-	loadn r3,#40
-	add r0,r0,r3
-	outchar r1,r0
-	loadn r3,#40
-	add r0,r0,r3
-	outchar r1,r0
-	
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r2,#' '
+	loadn r3,#'"'
+	outchar r2,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r2,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r2,#' '
+	loadn r3,#'"'
+	outchar r2,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r2,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r2,#' '
+	loadn r3,#'"'
+	outchar r2,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r2,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r2,#' '
+	loadn r3,#'"'
+	outchar r2,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r2,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r2,#' '
+	loadn r3,#'"'
+	outchar r2,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r2,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r2,#' '
+	loadn r3,#'"'
+	outchar r2,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r2,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r2,r0
+
+
+
 	finaliza_desenho:
 
+	pop r4
 	pop r3
 	pop r2
 	pop R1
@@ -461,6 +554,18 @@ MoveBot1_Desenha_2linha:
 	inc r1
 	outchar r3,r1
 
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+
 
 
 jmp finaliza desenho
@@ -522,6 +627,18 @@ MoveBot1_Desenha_3linha:
 	inc r1
 	inc r1
 	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
 
 	load r0,posBot1
 	loadn r1,#40
@@ -606,6 +723,18 @@ MoveBot1_Desenha_4linha:
 	inc r1
 	inc r1
 	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
 
 	load r0,posBot1
 	loadn r1,#40
@@ -713,6 +842,18 @@ MoveBot1_Desenha_5linha:
 	inc r1
 	inc r1
 	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
 
 	load r0,posBot1
 	loadn r1,#40
@@ -845,6 +986,18 @@ MoveBot1_Desenha_6linha:
 	inc r1
 	inc r1
 	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
 
 	load r0,posBot1
 	loadn r1,#40
@@ -1003,6 +1156,18 @@ MoveBot1_Desenha_7linha:
 	inc r1
 	inc r1
 	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
 
 	load r0,posBot1
 	loadn r1,#40
@@ -1189,6 +1354,18 @@ MoveBot1_Desenha_8linha:
 	inc r1
 	inc r1
 	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
 
 	load r0,posBot1
 	loadn r1,#40
@@ -1402,6 +1579,18 @@ MoveBot1_Desenha_9linha:
 	inc r1
 	inc r1
 	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
 
 	load r0,posBot1
 	loadn r1,#40

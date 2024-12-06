@@ -1,25 +1,16 @@
-; $ = farol do carro player (fazer amarelo)
-; b = farol do carro npc 
-; % = graminha (fazer verde)
-; & = tronco da árvore (fazer marrom)
-; ' = canto superior esquerda árvore
-; ( = canto superior direita árvore
-; g = canto inferior esquerda árvore
-; h = canto inferior direita árvore
-; + = árvore parte superior reta
-; , = árvore parte inferior reta 
-; ) = faixa da estrada ( vamos fazer amarelo forte ) 
-;asterisco = xadrez que divide mato da estrada
 
-jmp menu
-
+posCarro: var #1			; Contem a posicao atual da Carro
+posAntCarro: var #1		; 
 
 Letra: var #1		; Contem a letra que foi digitada
 
-posCarro: var #1172		; Contem a posicao atual da Carro
-posAntCarro: var #1181	; Contem a posicao anterior da Carro
 
-status: var #0     ;status 0=vivo, 1=morto
+Loadn R0, #1012	
+store posCarro, R0		; Zera Posicao Atual da Carro
+loadn r0,#1021
+store posAntCarro, R0	; Zera Posicao Anterior da Carro
+Loadn R0, #0			; Contador para os Mods	= 0
+loadn R2, #0			; Para verificar se (mod(c/10)==0
 
 
 menu:
@@ -27,209 +18,172 @@ menu:
 	
 	menu_loop:	
 		call DigLetra
-		loadn r0, #'S'
+		loadn r0, #'s'
 		load r1, Letra
 		cmp r0, r1		
-		jeq main	
+		jeq main
 		jne menu_loop
 	
 	halt
 
-;------------------------------
-;Codigo principal
+
 main:
+
+call ApagaTela
+call printtelaCenScreen
+
+Loop:
 	
-	loadn r1, #telaCenLinha0	; Endereco onde comeca a primeira linha do cenario!!
-	loadn r2, #1024  			; cor branca!
+		loadn R1, #10
+		mod R1, R0, R1
+		cmp R1, R2		; if (mod(c/10)==0
+		ceq MoveCarro	; Chama Rotina de movimentacao da Carro
 	
-	Move_main:
-
-		call ImprimeTela		;  Rotina de Impresao de Cenario na Tela Inteira
-		call MoveCarro
-		
-	loadn r0,#'0'
-	load r1, status
-	cmp r0,r1
-	jeq Move_main
+		call Delay
+		inc R0 	;c++
+		jmp Loop
 
 
 
-	call printtelafimScreen
-
-	menu_fim:	
-		call DigLetra
-		loadn r0, #'S'
-		load r1, Letra
-		cmp r0, r1			
-		jeq main
-		loadn r0, #'N'
-		cmp r0,r1
-		jne fim
-
-		finalizando_menu_fim_funcao:
-			call printtelaXUPAFEDERALScreen
-			call DigLetra
-			loadn r0, #'M'
-			load r1, Letra
-			cmp r0, r1
-			jeq main
-			jne menu
-
-	fim:
-	call printtelaXUPAFEDERALScreen
-	call DigLetra
-		load r1, Letra
-		loadn r0, #'M'
-		cmp r0,r1
-		jeq menu
-		jne fim_jogo
-	fim_jogo:
-
-halt
-
-
-;********************************************************
-;                       DELAY
-;********************************************************		
-
-
-Delay:
-						;Utiliza Push e Pop para nao afetar os Ristradores do programa principal
-	Push r0
-	Push r1
-	
-	Loadn r1, #50  ; a
-   Delay_volta2:				;Quebrou o contador acima em duas partes (dois loops de decremento)
-	Loadn r0, #3000	; b
-   Delay_volta: 
-	Dec r0					; (4*a + 6)b = 1000000  == 1 seg  em um clock de 1MHz
-	JNZ Delay_volta	
-	Dec r1
-	JNZ Delay_volta2
-	
-	Pop r1
-	Pop r0
-	
-	rts					;return
-
-;-------------------------------
-
-MoveCarro:
+	MoveCarro:
 	push r0
 	push r1
 	
 	call MoveCarro_RecalculaPos		; Recalcula Posicao da Carro
 
+; So' Apaga e Redesenha se (pos != posAnt)
+;	If (posCarro != posAntCarro)	{	
 	load r0, posCarro
 	load r1, posAntCarro
 	cmp r0, r1
-
 	jeq MoveCarro_Skip
-		call MoveCarro_Desenha	
-		call Delay	;}
-    MoveCarro_Skip:
+		call MoveCarro_Apaga
+		call MoveCarro_Desenha		;}
+  MoveCarro_Skip:
 	
 	pop r1
 	pop r0
 	rts
-;------------------------------
 
+;--------------------------------
+	
+MoveCarro_Apaga:		; Apaga a Carro preservando o Cenario!
+	push R0
+	push R1
+	push R2
+	push R3
+	push R4
+	push R5
+
+	load R0, posAntCarro	; R0 = posAnt
+	loadn r3,#5
+	add r3,r0,r3
+	
+	loadn r2,#' '
+	
+	outchar R2, R0	; Apaga o Obj na tela com o Char correspondente na memoria do cenario
+	outchar r2, r3
+
+	pop R5
+	pop R4
+	pop R3
+	pop R2
+	pop R1
+	pop R0
+	rts
+;----------------------------------	
 	
 MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas pressionadas
-	push r0
-	push r1
-	push r2
+	push R0
+	push R1
+	push R2
+	push R3
 
-	load r0, posCarro
-	inchar r2
-	loadn r1, #'D'
-	cmp r1,r2
-	jeq MoveCarro_RecalculaPos_D
+	load R0, posCarro
 	
-	inchar r2
-	loadn r1,#'A'
-	cmp r1, r2
+	inchar R1				; Le Teclado para controlar a Carro
+	loadn R2, #'a'
+	cmp R1, R2
 	jeq MoveCarro_RecalculaPos_A
+	
+	loadn R2, #'d'
+	cmp R1, R2
+	jeq MoveCarro_RecalculaPos_D
 
-
+	
   MoveCarro_RecalculaPos_Fim:	; Se nao for nenhuma tecla valida, vai embora
-	
-BREAKP
-	pop r2
-	pop r1
-	pop r0
+	store posCarro, R0
+	pop R3
+	pop R2
+	pop R1
+	pop R0
 	rts
 
-    MoveCarro_RecalculaPos_A:	; Move Carro para Esquerda
+  MoveCarro_RecalculaPos_A: ; Move Carro para Esquerda
+    loadn R1, #40
+    loadn R2, #12
+	load r3,posCarro
+    mod R1, r3, R1      ; Testa condicoes de Contorno
+    cmp R1, R2
+    jeq MoveCarro_RecalculaPos_Fim
+    loadn r0,#1012
+	store posAntCarro,r3
+	store posCarro,r0
+    jmp MoveCarro_RecalculaPos_Fim
+       
+  MoveCarro_RecalculaPos_D: ; Move Carro para Direita  
+    loadn R1, #40
+    loadn R2, #22
+	load r3,posCarro
+    mod R1, R3, R1      ; Testa condicoes de Contorno
+    cmp R1, R2
+    jeq MoveCarro_RecalculaPos_Fim
+	loadn r0,#1022
+	store posAntCarro,r3
+	store posCarro,r0
+    jmp MoveCarro_RecalculaPos_Fim
+	
 
+;----------------------------------
 
-	;call MoveCarro_Apaga
-	loadn r1, #40         ; para usar no mod futuramente
-	loadn r0, #posCarro
-	loadn r2,#12       ; contorno limite na esquerda
-	mod r1, r0, r1		; Testa condicoes de Contorno pegando o resto no mod 40
-	cmp r1, r2
-	jeq MoveCarro_RecalculaPos_Fim  ; se a condição de contorno for dada como verdadeira, o carro não se move mais e finaliza o movecarro
-	loadn r0,#1181
-	;store posAntCarro,r0
-	loadn r3,#10
-	sub r1,r0,r3
-	store posCarro,r1
-	jmp MoveCarro_RecalculaPos_Fim
-
-  MoveCarro_RecalculaPos_D:	; Move Carro para Direita
-  
-
-	call MoveCarro_Apaga
-	loadn r1, #40         ; para usar no mod futuramente
-	loadn r0, #posCarro
-	loadn r2,#22       ; contorno limite na direita
-	mod r1, r0, r1		; Testa condicoes de Contorno pegando o resto no mod 40
-	cmp r1, r2
-	jeq MoveCarro_RecalculaPos_Fim  ; se a condição de contorno for dada como verdadeira, o carro não se move mais e finaliza o movecarro
-	loadn r0,#1172
-	store posAntCarro,r0
-	loadn r3,#10
-	add r1,r0,r3
-	store posCarro,r1
-	jmp MoveCarro_RecalculaPos_Fim
-
-
-MoveCarro_Apaga:		; Apaga a Carro preservando o Cenario!
-	push r0
-	push r1
-	push r2
+MoveCarro_Desenha:	; Desenha caractere da Carro
+	push R0
+	push R1
 	push r3
 
-	load r0, posAntCarro	; R0 = posAnt
-	loadn r1,#' '
+	loadn r3,#5
+	Loadn R1, #'c'	; Carro
+	load R0, posCarro
+	outchar R1, R0
+	store posAntCarro, R0	; Atualiza Posicao Anterior da Carro = Posicao Atual
+	add r0,r0,r3
+	outchar r1,r0
 
-	outchar r1, r0	; Apaga o Obj na tela com o Char correspondente na memoria do cenario
-
-	pop r3
-	pop r2
-	pop r1
-	pop r0
-	rts
-
-
-MoveCarro_Desenha:	; Desenha caracter do Carro
-	push r0
-	push r1
-	push r2
-	push r3
-
-	loadn r3,#'R'
-	load r0,posCarro
-	outchar r3,r0
 	
-	MoveCarro_Desenha_Fim:
-
-	pop r3
 	pop r2
-	pop r1
-	pop r0
+	pop R1
+	pop R0
 	rts
+
+	Delay:
+						;Utiliza Push e Pop para nao afetar os Ristradores do programa principal
+	Push R0
+	Push R1
+	
+	Loadn R1, #50  ; a
+   Delay_volta2:				;Quebrou o contador acima em duas partes (dois loops de decremento)
+	Loadn R0, #3000	; b
+   Delay_volta: 
+	Dec R0					; (4*a + 6)b = 1000000  == 1 seg  em um clock de 1MHz
+	JNZ Delay_volta	
+	Dec R1
+	JNZ Delay_volta2
+	
+
+	Pop R1
+	Pop R0
+	
+	RTS		
 
 ;********************************************************
 ;                   DIGITE UMA LETRA
@@ -241,9 +195,9 @@ DigLetra:	; Espera que uma tecla seja digitada e salva na variavel global "Letra
 	push r2
 	push r3
 
-	loadn r1, #'S'
-	loadn r2,#'N'
-	loadn r3,#'M'
+	loadn r1, #'s'
+	loadn r2,#'n'
+	loadn r3,#'m'
 
    DigLetra_Loop:
 		inchar r0			; Le o teclado
@@ -308,73 +262,7 @@ ImprimeStr:	;  Rotina de Impresao de Mensagens:    r0 = Posicao da tela que o pr
 	rts
 
 ;********************************************************
-;                   IMPRIME CENÁRIO
-;********************************************************
-	
-ImprimeCenario:	;  Rotina de Impresao de Mensagens:    r0 = Posicao da tela que o primeiro caractere da mensagem sera' impresso;  r1 = endereco onde comeca a mensagem; r2 = cor da mensagem.   Obs: a mensagem sera' impressa ate' encontrar "/0"
-	push r0	; protege o r0 na pilha para preservar seu valor
-	push r1	; protege o r1 na pilha para preservar seu valor
-	push r2	; protege o r1 na pilha para preservar seu valor
-	push r3	; protege o r3 na pilha para ser usado na subrotina
-	push r4	; protege o r4 na pilha para ser usado na subrotina
-	
-	loadn r3, #'\0'	; Criterio de parada
-
-   ImprimeCenario_Loop:	
-		loadi r4, r1
-		cmp r4, r3		; If (Char == \0)  vai Embora
-		jeq ImprimeCenario_Sai
-		add r4, r2, r4	; Soma a Cor
-		outchar r4, r0	; Imprime o caractere na tela
-		inc r0			; Incrementa a posicao na tela
-		inc r1			; Incrementa o ponteiro da String
-		jmp ImprimeCenario_Loop
-	
-   ImprimeCenario_Sai:	
-	pop r4	; Resgata os valores dos registradores utilizados na Subrotina da Pilha
-	pop r3
-	pop r2
-	pop r1
-	pop r0
-	rts
-
-; Declara uma tela vazia para ser preenchida em tempo de execussao:
-
-telaCenLinha0  : string " %        *         )         *   '+(   "
-telaCenLinha1  : string "          *                   *   g,h   "
-telaCenLinha2  : string "      %   *         )         *    &    "
-telaCenLinha3  : string "          *                   *    &    "
-telaCenLinha4  : string " %        *         )         *    &    " 
-telaCenLinha5  : string "   '+(    *                   *  %      "
-telaCenLinha6  : string "   g,h    *         )         *       % "
-telaCenLinha7  : string "    &     *                   *         "
-telaCenLinha8  : string "    &     *         )         *  %      "
-telaCenLinha9  : string "    &     *                   *         "
-telaCenLinha10 : string " %        *         )         *   '+(   "
-telaCenLinha11 : string "          *                   *   g,h   "
-telaCenLinha12 : string "       %  *         )         *    &    "
-telaCenLinha13 : string "          *                   *    &    "
-telaCenLinha14 : string " %        *         )         *    &    "
-telaCenLinha15 : string "   '+(    *                   * %       "
-telaCenLinha16 : string "   g,h    *         )         *         "
-telaCenLinha17 : string "    &     *                   *      %  "
-telaCenLinha18 : string "    &     *         )         *         "
-telaCenLinha19 : string "    &     *                   * %       "
-telaCenLinha20 : string "          *         )         *   '+(   "
-telaCenLinha21 : string " %        *                   *   g,h   "
-telaCenLinha22 : string "          *         )         *    &    "
-telaCenLinha23 : string "       %  *                   *    &    "
-telaCenLinha24 : string " %        *         )         *    &    "
-telaCenLinha25 : string "   '+(    *                   *         "
-telaCenLinha26 : string "   g,h    *         )         * %       "
-telaCenLinha27 : string "    &     *                   *         "
-telaCenLinha28 : string "    &     *         )         *      %  "
-telaCenLinha29 : string "    &     *                   *         "
-
-
-
-;********************************************************
-;                      APAGA TELA
+;                       APAGA TELA
 ;********************************************************
 ApagaTela:
 	push r0
@@ -393,7 +281,7 @@ ApagaTela:
 	rts	
 	
 ;------------------------	
-; Declara uma tela vazia para ser preenchida em tempo de execução:
+; Declara uma tela vazia para ser preenchida em tempo de execussao:
 
 tela0Linha0  : string "                                        "
 tela0Linha1  : string "                                        "
@@ -425,6 +313,44 @@ tela0Linha26 : string "                                        "
 tela0Linha27 : string "                                        "
 tela0Linha28 : string "                                        "
 tela0Linha29 : string "                                        "	
+
+
+
+
+;********************************************************
+;                       IMPRIME TELA
+;********************************************************	
+
+ImprimeTela: 	;  Rotina de Impresao de Cenario na Tela Inteira
+		;  r1 = endereco onde comeca a primeira linha do Cenario
+		;  r2 = cor do Cenario para ser impresso
+
+	push r0	; protege o r3 na pilha para ser usado na subrotina
+	push r1	; protege o r1 na pilha para preservar seu valor
+	push r2	; protege o r1 na pilha para preservar seu valor
+	push r3	; protege o r3 na pilha para ser usado na subrotina
+	push r4	; protege o r4 na pilha para ser usado na subrotina
+	push r5	; protege o r4 na pilha para ser usado na subrotina
+
+	loadn r0, #0  	; posicao inicial tem que ser o comeco da tela!
+	loadn r3, #40  	; Incremento da posicao da tela!
+	loadn r4, #41  	; incremento do ponteiro das linhas da tela
+	loadn r5, #1200 ; Limite da tela!
+	
+   ImprimeTela_Loop:
+		call ImprimeStr
+		add r0, r0, r3  	; incrementaposicao para a segunda linha na tela -->  r0 = R0 + 40
+		add r1, r1, r4  	; incrementa o ponteiro para o comeco da proxima linha na memoria (40 + 1 porcausa do /0 !!) --> r1 = r1 + 41
+		cmp r0, r5			; Compara r0 com 1200
+		jne ImprimeTela_Loop	; Enquanto r0 < 1200
+
+	pop r5	; Resgata os valores dos registradores utilizados na Subrotina da Pilha
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
 
 ;********************************************************
 ;                      TELA MENU
@@ -503,40 +429,85 @@ telamenuLinha27 : string "                                        "
 telamenuLinha28 : string "                                        "
 telamenuLinha29 : string "                                        "
 
+
 ;********************************************************
-;                       IMPRIME TELA
-;********************************************************	
-
-ImprimeTela: 	;  Rotina de Impresao de Cenario na Tela Inteira
-		;  r1 = endereco onde comeca a primeira linha do Cenario
-		;  r2 = cor do Cenario para ser impresso
-
-	push r0	; protege o r3 na pilha para ser usado na subrotina
-	push r1	; protege o r1 na pilha para preservar seu valor
-	push r2	; protege o r1 na pilha para preservar seu valor
-	push r3	; protege o r3 na pilha para ser usado na subrotina
-	push r4	; protege o r4 na pilha para ser usado na subrotina
-	push r5	; protege o r4 na pilha para ser usado na subrotina
-
-	loadn r0, #0  	; posicao inicial tem que ser o comeco da tela!
-	loadn r3, #40  	; Incremento da posicao da tela!
-	loadn r4, #41  	; incremento do ponteiro das linhas da tela
-	loadn r5, #1200 ; Limite da tela!
+;                   IMPRIME CENÁRIO
+;********************************************************
 	
-   ImprimeTela_Loop:
-		call ImprimeStr
-		add r0, r0, r3  	; incrementaposicao para a segunda linha na tela -->  r0 = R0 + 40
-		add r1, r1, r4  	; incrementa o ponteiro para o comeco da proxima linha na memoria (40 + 1 porcausa do /0 !!) --> r1 = r1 + 41
-		cmp r0, r5			; Compara r0 com 1200
-		jne ImprimeTela_Loop	; Enquanto r0 < 1200
+printtelaCenScreen:
 
-	pop r5	; Resgata os valores dos registradores utilizados na Subrotina da Pilha
-	pop r4
-	pop r3
-	pop r2
-	pop r1
-	pop r0
-	rts
+push r0
+push r1
+push r2
+push r3
+push r4
+push r5
+push r6
+	
+loadn r0,#40 
+loadn r4,#40
+loadn r5,#0
+loadn r2,#telaCenLinha29
+add r2,r2,r0
+loadn r0,#0
+loadn r1,#telaCenLinha0
+
+   printtelaCen_Loop:
+   	loadi r6,r1
+	outchar r6, r0
+	inc r1
+	inc r0
+	mod r3,r0,r4
+	cmp r3,r5
+	jne printtelaCen_skip
+	inc r1
+	printtelaCen_skip:
+		cmp r1,r2
+		jne printtelaCen_Loop
+
+pop r6
+pop r5
+pop r4
+pop r3
+pop r2
+pop r1	
+pop r0
+rts	
+
+; Declara uma tela vazia para ser preenchida em tempo de execussao:
+
+telaCenLinha0  : string " %        *         )         *   '+(   "
+telaCenLinha1  : string "          *                   *   g,h   "
+telaCenLinha2  : string "      %   *         )         *    &    "
+telaCenLinha3  : string "          *                   *    &    "
+telaCenLinha4  : string " %        *         )         *    &    " 
+telaCenLinha5  : string "   '+(    *                   *  %      "
+telaCenLinha6  : string "   g,h    *         )         *       % "
+telaCenLinha7  : string "    &     *                   *         "
+telaCenLinha8  : string "    &     *         )         *  %      "
+telaCenLinha9  : string "    &     *                   *         "
+telaCenLinha10 : string " %        *         )         *   '+(   "
+telaCenLinha11 : string "          *                   *   g,h   "
+telaCenLinha12 : string "       %  *         )         *    &    "
+telaCenLinha13 : string "          *                   *    &    "
+telaCenLinha14 : string " %        *         )         *    &    "
+telaCenLinha15 : string "   '+(    *                   * %       "
+telaCenLinha16 : string "   g,h    *         )         *         "
+telaCenLinha17 : string "    &     *                   *      %  "
+telaCenLinha18 : string "    &     *         )         *         "
+telaCenLinha19 : string "    &     *                   * %       "
+telaCenLinha20 : string "          *         )         *   '+(   "
+telaCenLinha21 : string " %        *                   *   g,h   "
+telaCenLinha22 : string "          *         )         *    &    "
+telaCenLinha23 : string "       %  *                   *    &    "
+telaCenLinha24 : string " %        *         )         *    &    "
+telaCenLinha25 : string "   '+(    *                   *         "
+telaCenLinha26 : string "   g,h    *         )         * %       "
+telaCenLinha27 : string "    &     *                   *         "
+telaCenLinha28 : string "    &     *         )         *      %  "
+telaCenLinha29 : string "    &     *                   *         "
+
+
 
 ;********************************************************
 ;                      TELA FIM
@@ -691,3 +662,6 @@ telaXUPAFEDERALLinha26 : string "                  stuv                  "
 telaXUPAFEDERALLinha27 : string "                                        "
 telaXUPAFEDERALLinha28 : string "                                        "
 telaXUPAFEDERALLinha29 : string "                                        "
+
+
+

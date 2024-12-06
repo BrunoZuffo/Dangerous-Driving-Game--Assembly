@@ -1,30 +1,33 @@
 
-posCarro: var #1			; Contem a posicao atual da Carro
-posAntCarro: var #1		; 
+posCarro: var #1		;   Contém a posição atual da Carro
+posAntCarro: var #1		;   Contém a posição anterior do Carro
 
-Letra: var #1		; Contem a letra que foi digitada
-status: var #1    ;0=morto, 1=vivo
+Letra: var #1	        	;   Contém a letra que foi digitada pelo usuário
+status: var #1          	;   Status 0 = Morto, 1 = Vivo
 
-loadn r0,#1
-store status,r0
+loadn r0,#1			;   Carrega 1 no R0
+store status,r0			;   Armazena na variável status o valor do R0 (0)
+
 Loadn R0, #1012	
-store posCarro, R0		; Zera Posicao Atual da Carro
-loadn r0,#1021
-store posAntCarro, R0	; Zera Posicao Anterior da Carro
-Loadn R0, #0			; Contador para os Mods	= 0
-loadn R2, #0			; Para verificar se (mod(c/10)==0
+store posCarro, R0		;   Zera a posição atual do carro
+
+loadn r0, #1021
+store posAntCarro, R0		;   Zera a posição anterior do carro
+
+loadn R0, #0			;   Contador para os mods = 0
+loadn R2, #0			;   Para verificar se (mod(c/10)) = 0
 
 
 menu:
-	call printtelamenuScreen
+	call printtelamenuScreen	;   Chama a tela de menu do jogo
 	
-	menu_loop:	
+	menu_loop:			;   Entramos em um loop aguardando o usuário digitar S
 		call DigLetra
 		loadn r0, #'s'
 		load r1, Letra
 		cmp r0, r1		
-		jeq main
-		jne menu_loop
+		jeq main		;   Se o usuário digita S, vai para a função main do jogo
+		jne menu_loop           ;   Se o usuário não digita S, volta pro loop (aguardando digitar
 	
 	halt
 

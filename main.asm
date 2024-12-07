@@ -8,23 +8,6 @@ posAntBot1: var #1
 Letra: var #1	        	;   Contém a letra que foi digitada pelo usuário
 status: var #1          	;   Status 0 = Morto, 1 = Vivo
 
-loadn r0,#12
-store posBot1,r0
-
-loadn r0,#12
-store posAntBot1,r0
-
-loadn r0,#1			;   Carrega 1 no R0
-store status,r0			;   Armazena na variável status o valor do R0 (0)
-
-Loadn R0, #1052	
-store posCarro, R0		;   Zera a posição atual do carro
-
-loadn r0, #1061
-store posAntCarro, R0		;   Zera a posição anterior do carro
-
-loadn R0, #0			;   Contador para os mods = 0
-loadn R2, #0			;   Para verificar se (mod(c/10)) = 0
 
 
 menu:
@@ -46,13 +29,91 @@ main:
 call ApagaTela
 call printtelaCenScreen
 
+loadn r0,#12
+store posBot1,r0
+
+loadn r0,#12
+store posAntBot1,r0
+
+loadn r0,#1			;   Carrega 1 no R0
+store status,r0			;   Armazena na variável status o valor do R0 (0)
+
+Loadn R0, #1052	
+store posCarro, R0		;   Zera a posição atual do carro
+
+loadn r0, #1061
+store posAntCarro, R0		;   Zera a posição anterior do carro
+
+loadn R0, #0			;   Contador para os mods = 0
+loadn R2, #0			;   Para verificar se (mod(c/10)) = 0
+
 Loop:
-	
 		loadn R1, #10
 		mod R1, R0, R1
 		cmp R1, R2		; if (mod(c/10)==0
 		ceq MoveCarro	; Chama Rotina de movimentacao da Carro
-		call MoveBot1
+		cmp r1,r2
+		ceq MoveBot1
+		load r5,posCarro
+		load r6,posBot1
+		cmp r5,r6
+		jeq tela_fim
+		loadn r7,#40
+		load r4,posCarro
+		add r4,r4,r7
+		add r4,r4,r7
+		add r4,r4,r7
+		cmp r4,r6
+		jeq tela_fim
+		sub r6,r6,r7
+		cmp r5,r6
+		jeq tela_fim
+		cmp r4,r6
+		jeq tela_fim
+		sub r6,r6,r7
+		cmp r5,r6
+		jeq tela_fim
+		cmp r4,r6
+		jeq tela_fim
+		sub r6,r6,r7
+		cmp r5,r6
+		jeq tela_fim
+		cmp r4,r6
+		jeq tela_fim
+		sub r6,r6,r7
+		cmp r5,r6
+		jeq tela_fim
+		cmp r4,r6
+		jeq tela_fim
+		sub r6,r6,r7
+		cmp r5,r6
+		jeq tela_fim
+		cmp r4,r6
+		jeq tela_fim
+		sub r6,r6,r7
+		cmp r5,r6
+		jeq tela_fim
+		cmp r4,r6
+		jeq tela_fim
+		sub r6,r6,r7
+		cmp r5,r6
+		jeq tela_fim
+		cmp r4,r6
+		jeq tela_fim
+		sub r6,r6,r7
+		cmp r5,r6
+		jeq tela_fim
+		cmp r4,r6
+		jeq tela_fim
+		sub r6,r6,r7
+		cmp r5,r6
+		jeq tela_fim
+		cmp r4,r6
+		jeq tela_fim
+		;pos carro = r5
+		;pos bot = r6
+
+		
 
 		call Delay
 		inc R0 	;c++
@@ -61,6 +122,7 @@ Loop:
 		cmp r3,r4
 		jeq Loop
 
+	tela_fim:
 	call printtelafimScreen
 
 	loop_fim:

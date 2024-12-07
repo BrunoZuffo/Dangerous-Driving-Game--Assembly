@@ -2,16 +2,25 @@
 posCarro: var #1		;   Contém a posição atual da Carro
 posAntCarro: var #1		;   Contém a posição anterior do Carro
 
+posBot1: var #1
+posAntBot1: var #1
+
 Letra: var #1	        	;   Contém a letra que foi digitada pelo usuário
 status: var #1          	;   Status 0 = Morto, 1 = Vivo
+
+loadn r0,#12
+store posBot1,r0
+
+loadn r0,#12
+store posAntBot1,r0
 
 loadn r0,#1			;   Carrega 1 no R0
 store status,r0			;   Armazena na variável status o valor do R0 (0)
 
-Loadn R0, #1012	
+Loadn R0, #1052	
 store posCarro, R0		;   Zera a posição atual do carro
 
-loadn r0, #1021
+loadn r0, #1061
 store posAntCarro, R0		;   Zera a posição anterior do carro
 
 loadn R0, #0			;   Contador para os mods = 0
@@ -43,7 +52,8 @@ Loop:
 		mod R1, R0, R1
 		cmp R1, R2		; if (mod(c/10)==0
 		ceq MoveCarro	; Chama Rotina de movimentacao da Carro
-	
+		call MoveBot1
+
 		call Delay
 		inc R0 	;c++
 		loadn r3,#1
@@ -244,7 +254,7 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
     mod R1, r3, R1      ; Testa condicoes de Contorno
     cmp R1, R2
     jeq MoveCarro_RecalculaPos_Fim
-    loadn r0,#1012
+    loadn r0,#1052
 	store posAntCarro,r3
 	store posCarro,r0
     jmp MoveCarro_RecalculaPos_Fim
@@ -256,7 +266,7 @@ MoveCarro_RecalculaPos:		; Recalcula posicao da Carro em funcao das Teclas press
     mod R1, R3, R1      ; Testa condicoes de Contorno
     cmp R1, R2
     jeq MoveCarro_RecalculaPos_Fim
-	loadn r0,#1022
+	loadn r0,#1062
 	store posAntCarro,r3
 	store posCarro,r0
     jmp MoveCarro_RecalculaPos_Fim
@@ -2511,7 +2521,7 @@ telafimLinha25 : string "                                        "
 telafimLinha26 : string "                                        "
 telafimLinha27 : string "                                        "
 telafimLinha28 : string "                                        "
-telafimLinha29 : string "                                        "
+telafimLinha29 : string "                                        "
 
 ;********************************************************
 ;                   TELA XUPA FEDERAL
@@ -2589,6 +2599,3 @@ telaXUPAFEDERALLinha26 : string "                  stuv                  "
 telaXUPAFEDERALLinha27 : string "                                        "
 telaXUPAFEDERALLinha28 : string "                                        "
 telaXUPAFEDERALLinha29 : string "                                        "
-
-
-

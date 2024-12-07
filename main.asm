@@ -368,6 +368,1750 @@ MoveCarro_Desenha:	; Desenha caractere da Carro
 	
 	RTS		
 
+	;*****************************************************************
+	;                          MOVE BOT 1
+	;*****************************************************************
+	MoveBot1:
+	push r0
+	push r1
+
+	call MoveBot1_Apaga
+	call MoveBot1_Desenha		;}
+	call MoveBot1_RecalculaPos		; Recalcula Posicao da Bot1
+	
+	pop r1
+	pop r0
+	rts
+
+;--------------------------------
+	
+MoveBot1_Apaga:
+	push R0
+	push R1
+	push R2
+	push R3
+	push R4
+	push R5
+	
+	load R0, posAntBot1	
+	loadn r2,#40
+	sub r0,r0,r2
+	sub r0,r0,r2
+	sub r0,r0,r2
+	sub r0,r0,r2
+	sub r0,r0,r2
+	sub r0,r0,r2
+	sub r0,r0,r2
+	sub r0,r0,r2
+	sub r0,r0,r2
+	loadn r1,#' '
+	outchar r1,r0
+	inc r0
+	outchar r1,r0
+	inc r0
+	outchar r1,r0
+	inc r0
+	outchar r1,r0
+	inc r0
+	outchar r1,r0
+	inc r0
+	outchar r1,r0
+	inc r0
+	outchar r1,r0
+
+
+	pop R5
+	pop R4
+	pop R3
+	pop R2
+	pop R1
+	pop R0
+	rts
+
+;----------------------------------	
+	
+MoveBot1_RecalculaPos:	
+	push R0
+	push R1
+	push R2
+	push R3
+
+	load r0,posBot1
+	loadn r1,#40
+	store posAntBot1,r0
+	add r0,r0,r1
+	store posBot1, R0
+
+	pop R3
+	pop R2
+	pop R1
+	pop R0
+	rts
+	
+
+;----------------------------------
+
+MoveBot1_Desenha:	; Desenha caractere da Bot1
+	push R0
+	push R1
+	push r2
+	push r3
+	push r4
+
+	loadn r0,#12
+	load r1,posBot1
+	cmp r0,r1
+	jeq MoveBot1_Desenha_1linha
+	loadn r2,#40
+	add r0,r0,r2
+	cmp r1,r0
+	jeq MoveBot1_Desenha_2linha
+	add r0,r0,r2
+	cmp r1,r0
+	jeq MoveBot1_Desenha_3linha
+	add r0,r0,r2
+	cmp r1,r0
+	jeq MoveBot1_Desenha_4linha
+	add r0,r0,r2
+	cmp r1,r0
+	jeq MoveBot1_Desenha_5linha
+	add r0,r0,r2
+	cmp r1,r0
+	jeq MoveBot1_Desenha_6linha
+	add r0,r0,r2
+	cmp r1,r0
+	jeq MoveBot1_Desenha_7linha
+	add r0,r0,r2
+	cmp r1,r0
+	jeq MoveBot1_Desenha_8linha
+	add r0,r0,r2
+	cmp r1,r0
+	jeq MoveBot1_Desenha_9linha
+
+	
+
+	load r0,posBot1
+	loadn r1,#'@'
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'a'
+	loadn r2,#1
+	add r0,r2,r0
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'b'
+	inc r0
+	inc r0
+	outchar r1,r0
+	inc r0
+	inc r0
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'#'
+	inc r0
+	inc r0
+	inc r0
+	outchar r1,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	inc r1
+	loadn r3,#'!'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	loadn r3,#'c'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#'@'
+	outchar r3,r0
+	inc r0
+	loadn r3,#'a'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'@'
+	outchar r3,r0
+	loadn r3,#'a'
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r1,#'c'
+	outchar r1,r0
+	loadn r1,#'!'
+	inc r0
+	outchar r1,r0
+	loadn r1,#'#'
+	inc r0
+	outchar r1,r0
+	loadn r1,#'#'
+	inc r0
+	outchar r1,r0
+	loadn r1,#'#'
+	inc r0
+	outchar r1,r0
+	loadn r1,#'c'
+	inc r0
+	outchar r1,r0
+	loadn r1,#'!'
+	inc r0
+	outchar r1,r0
+	
+
+	finaliza_desenho:
+
+	pop r4
+	pop r3
+	pop r2
+	pop R1
+	pop R0
+	rts
+
+
+	MoveBot1_Desenha_1linha:
+
+	load r0,posBot1
+	loadn r1,#'@'
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'a'
+	loadn r2,#1
+	add r0,r2,r0
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'b'
+	inc r0
+	inc r0
+	outchar r1,r0
+	inc r0
+	inc r0
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'#'
+	inc r0
+	inc r0
+	inc r0
+	outchar r1,r0
+
+
+
+jmp finaliza_desenho
+
+MoveBot1_Desenha_2linha:
+
+	load r0,posBot1
+	loadn r1,#'@'
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'a'
+	loadn r2,#1
+	add r0,r2,r0
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'b'
+	inc r0
+	inc r0
+	outchar r1,r0
+	inc r0
+	inc r0
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'#'
+	inc r0
+	inc r0
+	inc r0
+	outchar r1,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	inc r1
+	loadn r3,#'!'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	loadn r3,#'c'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+
+
+
+jmp finaliza_desenho
+
+MoveBot1_Desenha_3linha:
+
+	load r0,posBot1
+	loadn r1,#'@'
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'a'
+	loadn r2,#1
+	add r0,r2,r0
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'b'
+	inc r0
+	inc r0
+	outchar r1,r0
+	inc r0
+	inc r0
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'#'
+	inc r0
+	inc r0
+	inc r0
+	outchar r1,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	inc r1
+	loadn r3,#'!'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	loadn r3,#'c'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+
+jmp finaliza_desenho
+
+MoveBot1_Desenha_4linha:
+
+	load r0,posBot1
+	loadn r1,#'@'
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'a'
+	loadn r2,#1
+	add r0,r2,r0
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'b'
+	inc r0
+	inc r0
+	outchar r1,r0
+	inc r0
+	inc r0
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'#'
+	inc r0
+	inc r0
+	inc r0
+	outchar r1,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	inc r1
+	loadn r3,#'!'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	loadn r3,#'c'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+jmp finaliza_desenho
+
+MoveBot1_Desenha_5linha:
+
+	load r0,posBot1
+	loadn r1,#'@'
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'a'
+	loadn r2,#1
+	add r0,r2,r0
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'b'
+	inc r0
+	inc r0
+	outchar r1,r0
+	inc r0
+	inc r0
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'#'
+	inc r0
+	inc r0
+	inc r0
+	outchar r1,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	inc r1
+	loadn r3,#'!'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	loadn r3,#'c'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+jmp finaliza_desenho
+
+MoveBot1_Desenha_6linha:
+
+	load r0,posBot1
+	loadn r1,#'@'
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'a'
+	loadn r2,#1
+	add r0,r2,r0
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'b'
+	inc r0
+	inc r0
+	outchar r1,r0
+	inc r0
+	inc r0
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'#'
+	inc r0
+	inc r0
+	inc r0
+	outchar r1,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	inc r1
+	loadn r3,#'!'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	loadn r3,#'c'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+jmp finaliza_desenho
+
+MoveBot1_Desenha_7linha:
+
+	load r0,posBot1
+	loadn r1,#'@'
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'a'
+	loadn r2,#1
+	add r0,r2,r0
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'b'
+	inc r0
+	inc r0
+	outchar r1,r0
+	inc r0
+	inc r0
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'#'
+	inc r0
+	inc r0
+	inc r0
+	outchar r1,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	inc r1
+	loadn r3,#'!'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	loadn r3,#'c'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	
+
+jmp finaliza_desenho
+
+MoveBot1_Desenha_8linha:
+
+	load r0,posBot1
+	loadn r1,#'@'
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'a'
+	loadn r2,#1
+	add r0,r2,r0
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'b'
+	inc r0
+	inc r0
+	outchar r1,r0
+	inc r0
+	inc r0
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'#'
+	inc r0
+	inc r0
+	inc r0
+	outchar r1,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	inc r1
+	loadn r3,#'!'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	loadn r3,#'c'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+jmp finaliza_desenho
+
+MoveBot1_Desenha_9linha:
+
+	load r0,posBot1
+	loadn r1,#'@'
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'a'
+	loadn r2,#1
+	add r0,r2,r0
+	outchar r1,r0
+	loadn r2,#5
+	add r0,r0,r2
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'b'
+	inc r0
+	inc r0
+	outchar r1,r0
+	inc r0
+	inc r0
+	outchar r1,r0 
+
+	load r0,posBot1
+	loadn r1,#'#'
+	inc r0
+	inc r0
+	inc r0
+	outchar r1,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	inc r1
+	loadn r3,#'!'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r1,r0,r1
+	loadn r3,#'c'
+	outchar r3,r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	inc r1
+	outchar r3,r1
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	loadn r3,#' '
+	inc r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#' '
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'"'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+
+	load r0,posBot1
+	loadn r1,#40
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	sub r0,r0,r1
+	loadn r3,#'@'
+	outchar r3,r0
+	inc r0
+	loadn r3,#'a'
+	outchar r3,r0
+	loadn r3,#' '
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	outchar r3,r0
+	inc r0
+	loadn r3,#'@'
+	outchar r3,r0
+	loadn r3,#'a'
+	inc r0
+	outchar r3,r0
+
+jmp finaliza_desenho
+
+;-------------------------------------------------------------
+
 ;********************************************************
 ;                   DIGITE UMA LETRA
 ;********************************************************

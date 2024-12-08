@@ -55,6 +55,44 @@ Loop:
 		cmp r1,r2
 		ceq MoveBot1
 		
+		call Verifica_Colisao_Bot1
+
+		call Delay
+		inc R0 	;c++
+		loadn r3,#1
+		load r4,status
+		cmp r3,r4
+		jeq Loop
+
+	tela_fim:
+	call printtelafimScreen
+
+	loop_fim:
+		call DigLetra
+		loadn r0, #'s'
+		load r1, Letra
+		cmp r0, r1		
+		jeq main
+		loadn r2,#'n'
+		cmp r2,r1
+		jeq finalizando
+	jmp loop_fim
+
+	finalizando:
+	call printtelaXUPAFEDERALScreen
+	call DigLetra
+	loadn r0, #'m'
+	load r1, Letra
+	cmp r0, r1		
+	jeq menu
+	jmp finalizando
+
+	Verifica_Colisao_Bot1:
+	push r4
+	push r5
+	push r6
+	push r7
+
 		load r5,posCarro
 		load r6,posBot1
 		cmp r5,r6
@@ -64,7 +102,7 @@ Loop:
 		add r4,r4,r7
 		add r4,r4,r7
 		add r4,r4,r7    ;r4 agora armazena a posCarro na última linha da tela para a
-		cmp r4,r6       ;verificação de batida ao mover o caso ( comparação com a primeira linha da posBot1 aqui)
+		cmp r4,r6       ;verificação de batida ao mover o carro ( comparação com a primeira linha da posBot1 aqui)
 		jeq tela_fim
 		sub r6,r6,r7
 		cmp r5,r6       ;comparando a posCarro com a posBot1 ( nona linha de cima para baixo ) 
@@ -121,41 +159,12 @@ Loop:
 		jeq tela_fim
 		cmp r4,r6
 		jeq tela_fim
-		
-		;pos carro = r5
-		;pos bot = r6
 
-		
-
-		call Delay
-		inc R0 	;c++
-		loadn r3,#1
-		load r4,status
-		cmp r3,r4
-		jeq Loop
-
-	tela_fim:
-	call printtelafimScreen
-
-	loop_fim:
-		call DigLetra
-		loadn r0, #'s'
-		load r1, Letra
-		cmp r0, r1		
-		jeq main
-		loadn r2,#'n'
-		cmp r2,r1
-		jeq finalizando
-	jmp loop_fim
-
-	finalizando:
-	call printtelaXUPAFEDERALScreen
-	call DigLetra
-	loadn r0, #'m'
-	load r1, Letra
-	cmp r0, r1		
-	jeq menu
-
+		pop r7
+		pop r6
+		pop r5
+		pop r4
+		rts
 
 	MoveCarro:
 	push r0

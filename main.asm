@@ -54,6 +54,7 @@ Loop:
 		ceq MoveCarro	; Chama Rotina de movimentacao da Carro
 		cmp r1,r2
 		ceq MoveBot1
+		
 		load r5,posCarro
 		load r6,posBot1
 		cmp r5,r6
@@ -62,7 +63,17 @@ Loop:
 		load r4,posCarro
 		add r4,r4,r7
 		add r4,r4,r7
-		add r4,r4,r7
+		add r4,r4,r7    ;r4 agora armazena a posCarro na última linha da tela para a
+		cmp r4,r6       ;verificação de batida ao mover o caso ( comparação com a primeira linha da posBot1 aqui)
+		jeq tela_fim
+		sub r6,r6,r7
+		cmp r5,r6       ;comparando a posCarro com a posBot1 ( nona linha de cima para baixo ) 
+		jeq tela_fim
+		cmp r4,r6       ;comparando a posCarro ( última linha ) com a posBot1 ( nona linha de cima para baixo )
+		jeq tela_fim
+		sub r6,r6,r7
+		cmp r5,r6       ;comparando a posCarro com a posBot1 ( oitava linha de cima para baixo )
+		jeq tela_fim
 		cmp r4,r6
 		jeq tela_fim
 		sub r6,r6,r7
@@ -110,6 +121,7 @@ Loop:
 		jeq tela_fim
 		cmp r4,r6
 		jeq tela_fim
+		
 		;pos carro = r5
 		;pos bot = r6
 

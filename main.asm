@@ -630,9 +630,11 @@ verifica_score:
 	loadn r1,#10		;	para usar no mod
 	load r2,score
 	load r4,score_decimal
-	cmp r4,r1
+	cmp r2,r1
 	jeq inc_score_decimal
 	inc_score_decimal_fim:
+	load r2,score
+	load r4,score_decimal
 	mod r3,r2,r1
 	outchar r3,r0
 	dec r0

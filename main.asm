@@ -16,6 +16,7 @@ posAntBot4: var #1
 
 Letra: var #1	        	;   Contém a letra que foi digitada pelo usuário
 score: var #1
+score_decimal: var #1
 
 menu:
 	call printtelamenuScreen	;   Chama a tela de menu do jogo
@@ -77,7 +78,7 @@ loadn r6, #650
 loadn r7, #400
 
 store score,r0
-
+store score_decimal,r0
 
 Loop:
 		loadn R1, #10
@@ -110,6 +111,8 @@ Loop:
 		jeq repeticao_de_movimento
 
 		repeticao_de_movimento_fim:
+
+		call verifica_score
 
 		jmp Loop
 
@@ -435,7 +438,7 @@ Verifica_Colisao_Bot3:
 		pop r4
 		rts
 
-	Verifica_Colisao_Bot4:
+Verifica_Colisao_Bot4:
 	push r4
 	push r5
 	push r6
@@ -513,6 +516,42 @@ Verifica_Colisao_Bot3:
 		pop r5
 		pop r4
 		rts
+
+
+verifica_score:
+	push r0
+	push r1
+	push r2
+	push r3
+	push r4
+	push r5
+
+	loadn r0,#85
+	loadn r1,#10		;	para usar no mod
+	load r2,score
+	load r4,score_decimal
+	cmp r4,r1
+	jeq inc_score_decimal
+	inc_score_decimal_fim:
+	mod r3,r2,r1
+	outchar r3,r0
+	dec r0
+	outchar r4,r0
+
+	pop r5
+	pop r4
+	pop r3
+	pop r2
+	pop r1
+	pop r0
+	rts
+
+	inc_score_decimal:
+	inc r4
+	store score_decimal,r4
+	loadn r5,#0
+	store score,r5
+	jmp inc_score_decimal_fim
 
 MoveCarro:
 	push r0
@@ -796,7 +835,7 @@ MoveCarro_Desenha:	; Desenha caractere da Carro
 	push r2
 	
 	load r2,score
-	Loadn R1, #2000  ; a
+	Loadn R1, #1000  ; a
 	sub r1,r1,r2
 
    Delay_volta2:				;Quebrou o contador acima em duas partes (dois loops de decremento)
@@ -8112,11 +8151,11 @@ rts
 
 ; Declara uma tela vazia para ser preenchida em tempo de execussao:
 
-telaCenLinha0  : string " %        *         )         *   '+(   "
-telaCenLinha1  : string "          *                   *   g,h   "
-telaCenLinha2  : string "      %   *         )         *    &    "
-telaCenLinha3  : string "          *                   *    &    "
-telaCenLinha4  : string " %        *         )         *    &    " 
+telaCenLinha0  : string " c.....!  *         )         *   '+(   "
+telaCenLinha1  : string " :SCORE;  *                   *   g,h   "
+telaCenLinha2  : string " :     ;  *         )         *    &    "
+telaCenLinha3  : string " @/////a  *                   *    &    "
+telaCenLinha4  : string "          *         )         *    &    " 
 telaCenLinha5  : string "   '+(    *                   *  %      "
 telaCenLinha6  : string "   g,h    *         )         *       % "
 telaCenLinha7  : string "    &     *                   *         "

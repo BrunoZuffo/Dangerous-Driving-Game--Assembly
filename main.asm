@@ -76,6 +76,10 @@ store posCarro, R0		;   Zera a posição atual do carro
 loadn r0, #1061
 store posAntCarro, R0		;   Zera a posição anterior do carro
 
+loadn r0,#'0'			;	0 na tabela ASCII
+store score,r0
+store score_decimal,r0
+
 loadn R0, #0			;   Contador para os mods = 0
 loadn R2, #0			;   Para verificar se (mod(c/10)) = 0 e contador para o movebot1, movebot2 e movebot3
 loadn r3, #0			;	contador para um loop de repetição do movimento dos bots
@@ -83,9 +87,6 @@ loadn r4, #200
 loadn r5, #1260			;	comparador para o loop de repetição do movimento dos bots
 loadn r6, #650
 loadn r7, #400
-
-store score,r0
-store score_decimal,r0
 
 Loop:
 		loadn R1, #10
@@ -9954,7 +9955,7 @@ telamenuLinha24 : string "                                        "
 telamenuLinha25 : string "                                        "
 telamenuLinha26 : string "                                        "
 telamenuLinha27 : string "                                        "
-telamenuLinha28 : string "                                        "
+telamenuLinha28 : string " DUVIDO FAZER 20 PONTOS                 "
 telamenuLinha29 : string "                                        "
 
 

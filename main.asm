@@ -19,7 +19,6 @@ posAntBot5: var #1
 
 Letra: var #1	        	;   Contém a letra que foi digitada pelo usuário
 score: var #1
-score_decimal: var #1
 
 menu:
 	call printtelamenuScreen	;   Chama a tela de menu do jogo
@@ -76,9 +75,9 @@ store posCarro, R0		;   Zera a posição atual do carro
 loadn r0, #1061
 store posAntCarro, R0		;   Zera a posição anterior do carro
 
-loadn r0,#'0'			;	0 na tabela ASCII
+loadn r0,#0			;	0 na tabela ASCII
 store score,r0
-store score_decimal,r0
+
 
 loadn R0, #0			;   Contador para os mods = 0
 loadn R2, #0			;   Para verificar se (mod(c/10)) = 0 e contador para o movebot1, movebot2 e movebot3
@@ -88,7 +87,7 @@ loadn r5, #1260			;	comparador para o loop de repetição do movimento dos bots
 loadn r6, #650
 loadn r7, #400
 
-Loop:
+Loop:	
 		loadn R1, #10
 		mod R1, R0, R1
 		cmp R1, R2		; if (mod(c/10)==0
@@ -125,12 +124,11 @@ Loop:
 
 		repeticao_de_movimento_fim:
 
-		call verifica_score
+		call Imprime_Score
 
 		jmp Loop
 
 		movebot2_permissao_concedida:
-
 
 		cmp r0,r4
 		cgr MoveBot2
@@ -202,7 +200,7 @@ Loop:
 
 	tela_fim:
 	call printtelafimScreen
-
+	call Imprime_Score
 	loop_fim:
 		call DigLetra
 		loadn r0, #'s'
@@ -619,42 +617,50 @@ Verifica_Colisao_Bot5:
 		pop r4
 		rts
 
-verifica_score:
-	push r0
-	push r1
-	push r2
+
+
+
+
+;Primeiro numero a ser impresso (zero) esta na posicao 48 == Cod. ASCII do Zero
+;Por isso soma-se 48 ao valor a ser impresso
+;Abaixo tambem se encontra a logica para imprimir um numero de 2 digitos (tipo 21)
+Imprime_Score:	; R5 contem um numero de ate' 2 digitos     e    R6 a posicao onde vai imprimir na tela
+	Push R0
+	Push R1
+	Push R2
 	push r3
-	push r4
-	push r5
+	Push r5
+	push r6
+	
+	load r5,score
+	loadn r6,#83
 
-	loadn r0,#85
-	loadn r1,#10		;	para usar no mod
-	load r2,score
-	load r4,score_decimal
-	cmp r2,r1
-	jeq inc_score_decimal
-	inc_score_decimal_fim:
-	load r2,score
-	load r4,score_decimal
-	mod r3,r2,r1
-	outchar r3,r0
-	dec r0
-	outchar r4,r0
 
+	Loadn R0, #10
+	Loadn R2, #48
+	
+	Div R1, R5, R0	; Divide o numeo por 10 para imprimir a dezena
+	
+	Add R3, R1, R2	; Soma 48 ao numero pra dar o Cod.  ASCII do numero
+	Outchar R3, R6
+	
+	Inc R6			; Incrementa a posicao na tela
+	
+	Mul R1, R1, R0	; Multiplica a dezena por 10
+	Sub R1, R5, R1	; Pra subtrair do numero e pegar o resto
+	
+	Add R1, R1, R2	; Soma 48 ao numero pra dar o Cod.  ASCII do numero
+	Outchar R1, R6
+	
+	pop r6
 	pop r5
-	pop r4
-	pop r3
-	pop r2
-	pop r1
-	pop r0
-	rts
+	Pop R3
+	Pop R2
+	Pop R1
+	Pop R0
+	
+	RTS
 
-	inc_score_decimal:
-	inc r4
-	store score_decimal,r4
-	loadn r5,#0
-	store score,r5
-	jmp inc_score_decimal_fim
 
 MoveCarro:
 	push r0
@@ -938,11 +944,11 @@ MoveCarro_Desenha:	; Desenha caractere da Carro
 	push r2
 	
 	load r2,score
-	Loadn R1, #1000  ; a
+	Loadn R1, #100  ; a
 	sub r1,r1,r2
 
    Delay_volta2:				;Quebrou o contador acima em duas partes (dois loops de decremento)
-	Loadn R0, #200 ; b
+	Loadn R0, #1500 ; b
 	
    Delay_volta: 
 	Dec R0					; (4*a + 6)b = 1000000  == 1 seg  em um clock de 1MHz
@@ -1031,7 +1037,7 @@ MoveBot1_RecalculaPos:
 	store posBot1, R0
 	loadn r1,#1052
 	cmp r0,r1
-	jle MoveBot1_RecalculaPos_skip
+	jne MoveBot1_RecalculaPos_skip
 
 	load r1,score
 	inc r1
@@ -2781,9 +2787,9 @@ MoveBot2_RecalculaPos:
 	store posAntBot2,r0
 	add r0,r0,r1
 	store posBot2, R0
-	loadn r1,#1052
+	loadn r1,#1062
 	cmp r0,r1
-	jle MoveBot2_RecalculaPos_skip
+	jne MoveBot2_RecalculaPos_skip
 
 	load r1,score
 	inc r1
@@ -4534,7 +4540,7 @@ MoveBot3_RecalculaPos:
 	store posBot3, R0
 	loadn r1,#1052
 	cmp r0,r1
-	jle MoveBot3_RecalculaPos_skip
+	jne MoveBot3_RecalculaPos_skip
 
 	load r1,score
 	inc r1
@@ -6283,9 +6289,9 @@ MoveBot4_RecalculaPos:
 	store posAntBot4,r0
 	add r0,r0,r1
 	store posBot4, R0
-	loadn r1,#1052
+	loadn r1,#1062
 	cmp r0,r1
-	jle MoveBot4_RecalculaPos_skip
+	jne MoveBot4_RecalculaPos_skip
 
 	load r1,score
 	inc r1
@@ -8034,9 +8040,9 @@ MoveBot5_RecalculaPos:
 	store posAntBot5,r0
 	add r0,r0,r1
 	store posBot5, R0
-	loadn r1,#1052
+	loadn r1,#1062
 	cmp r0,r1
-	jle MoveBot5_RecalculaPos_skip
+	jne MoveBot5_RecalculaPos_skip
 
 	load r1,score
 	inc r1
@@ -9953,9 +9959,9 @@ telamenuLinha22 : string "                                        "
 telamenuLinha23 : string "                                        "
 telamenuLinha24 : string "                                        "
 telamenuLinha25 : string "                                        "
-telamenuLinha26 : string "                                        "
+telamenuLinha26 : string " DUVIDO FAZER 99 PONTOS                 "
 telamenuLinha27 : string "                                        "
-telamenuLinha28 : string " DUVIDO FAZER 20 PONTOS                 "
+telamenuLinha28 : string " SIMOES FEZ 81                          "
 telamenuLinha29 : string "                                        "
 
 
@@ -10084,10 +10090,10 @@ rts
 
 ;declara uma tela para ser o fim do jogo
 
-telafimLinha0  : string "                                        "
-telafimLinha1  : string "                                        "
-telafimLinha2  : string "                                        "
-telafimLinha3  : string "                                        "
+telafimLinha0  : string " c.....!                                "
+telafimLinha1  : string " :SCORE;                                "
+telafimLinha2  : string " :     ;                                "
+telafimLinha3  : string " @/////a                                "
 telafimLinha4  : string "                                        "
 telafimLinha5  : string "                                        "
 telafimLinha6  : string "                                        "

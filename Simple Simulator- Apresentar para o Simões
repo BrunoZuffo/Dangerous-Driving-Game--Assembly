@@ -1,4 +1,4 @@
-// gcc simple_simulator_Template.c -O3 -march=native -o simulador -Wall -lm
+    // gcc simple_simulator_Template.c -O3 -march=native -o simulador -Wall -lm
 // -lm is option to execute math.h library file.
 /*
 Perguntas:
@@ -513,16 +513,23 @@ loop:
 					break;
 
 				case PUSH:
-                    selM1=sPC;
-                    RW=0;
-                    IncPC=1;
+                    selM1=sSP;
+                    RW=1;
+                    if(pega_pedaco(IR,6,6)==0){
+                        selM3=rx;
+                    }
+                    else{
+                        selM3=8;
+                    }
+                    selM5=sM3;
+                    DecSP=1;
+
 					// -----------------------------
-					state=STATE_EXECUTE;
+					state=STATE_FETCH;
 					break;
 
 				case POP:
-					//SP++;
-                    IncSP=1;
+				    IncSP=1;
 					// -----------------------------
 					state=STATE_EXECUTE;
 					break;
@@ -598,7 +605,6 @@ loop:
 
 
 				case POP:
-                    IncSP=1;
                     selM1=sSP;
                     RW=0;
                     if(pega_pedaco(IR,6,6)==0){

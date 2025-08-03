@@ -1,24 +1,26 @@
 # 🏎️ Dangerous Driving Game
 
-**Linguagem:** Assembly  
-**Plataforma:** Emulador de CPU do ICMC  
-**Disciplina:** Organização e Arquitetura de Computadores - USP São Carlos
+**Language:** Assembly  
+**Platform:** ICMC's CPU Emulator  
+**Course:** Computer Organization and Architecture - USP São Carlos
 
 ---
 
-## 📋 O que é?
+## 📋 What is it?
 
-O **Dangerous Driving Game** é um jogo desenvolvido em Assembly para a disciplina de Organização e Arquitetura de Computadores da Universidade de São Paulo (USP), campus de São Carlos.
+**Dangerous Driving Game** is an obstacle-avoidance game developed in Assembly language for the *Computer Organization and Architecture* course at the University of São Paulo (USP), São Carlos campus.
 
-O objetivo do jogo é desviar de carros que aparecem na tela e alcançar o maior score possível.
+The goal of the game is to dodge cars that appear on the screen and reach the highest score possible.
 
-🎥 Você pode assistir ao vídeo completo do jogo [clicando aqui](https://www.youtube.com/watch?v=Up0-HBPKRHM).
+🎥 You can watch the full gameplay video (in Portuguese) [here](https://www.youtube.com/watch?v=Up0-HBPKRHM).
+
+> ⚠️ Note: Due to possible future updates to the online emulator, the game's refresh rate may be inconsistent compared to when it was originally developed.
 
 ---
 
-## 🖼️ Fotos do Jogo
+## 🖼️ Screenshots
 
-Você pode visualizar algumas fotos do jogo abaixo:
+Check out some screenshots of the game below:
 
 <img src="https://i.imgur.com/inf2Nst.png" width="400" />
 <img src="https://i.imgur.com/H9psuCe.png" width="400" />
@@ -26,44 +28,19 @@ Você pode visualizar algumas fotos do jogo abaixo:
 
 ---
 
-## ▶️ Como Executar
+## ▶️ How to Run
 
-Você pode utilizar o [Emulador de CPU do ICMC](https://proc.giroto.dev/) para executar o código `main.asm`.  
-Basta fazer o **Build** e depois **executar o código buildado**.
-
----
-
-## 🌐 English Version
-
-### What is it?
-
-**Dangerous Driving Game** is a simple obstacle-avoidance game developed in Assembly as part of the *Computer Organization and Architecture* course at the University of São Paulo (USP), São Carlos campus.
-
-The goal is to dodge incoming cars and survive as long as possible to achieve the highest score.
-
-🎥 Watch the full gameplay video [here](https://www.youtube.com/watch?v=Up0-HBPKRHM).
-
-### Screenshots
-
-<p float="left">
-  <img src="https://i.imgur.com/inf2Nst.png" width="400" />
-  <img src="https://i.imgur.com/H9psuCe.png" width="400" />
-  <img src="https://i.imgur.com/A82rvL3.png" width="400" />
-</p>
-
-### How to Run
-
-To run the game, use the [ICMC's CPU Emulator](https://proc.giroto.dev/):
+You can use the [ICMC's CPU Emulator](https://proc.giroto.dev/) to run the `main.asm` file.
 
 1. Open the `main.asm` file in the emulator.
 2. Click **Build**.
-3. Then, run the compiled code.
+3. Then run the built code.
 
-Enjoy the ride — and avoid the crashes!
+Have fun dodging and driving your way to the top score!
 
 ---
 
-## 👨‍💻 Desenvolvido por / Developed by
+## 👨‍💻 Developed by
 
 **Bruno Zuffo**  
 [GitHub](https://github.com/BrunoZuffo) · [LinkedIn](https://www.linkedin.com/in/bruno-zuffo-10088b216/)
